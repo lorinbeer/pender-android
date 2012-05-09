@@ -77,25 +77,24 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	
     		GLES10.glLoadIdentity();  
     	  
-    	    GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
+    	//    GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
         
-        	execScript( "draw();" );  
+        //	execScript( "draw();" );  
     	    
     		float vert[] = { 
-   	  		      -1.0f,  1.0f, 0.0f,
-   	  		      -1.0f, -1.0f, 0.0f,
-   	  		       1.0f, -1.0f, 0.0f,
-   	  		       1.0f,  1.0f, 0.0f,
-   	  		       
+   	  		      10.0f, 10.0f, 0.0f,
+   	  		      10.0f, 40.0f, 0.0f,
+   	  		      40.0f, 40.0f, 0.0f,
+   	  		      40.0f, 10.0f, 0.0f,  
    	  		};
 
     		short[] ind = { 0, 1, 2, 0, 2, 3 };
 
     	    Polygon poly = new Polygon( vert, ind );
     	    
-    	 /*   this.drawPolygon( poly );
+    	   this.drawPolygon( poly );
     	    
-    	    this.drawTexturedPolygon(poly, textureList.get(0) );*/
+    	    this.drawTexturedPolygon(poly, textureList.get(0) );
     	    
     	}
 
@@ -121,7 +120,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	GLES10.glDepthFunc( GLES10.GL_LEQUAL );
     	
     	GLES10.glHint( GLES10.GL_PERSPECTIVE_CORRECTION_HINT, GLES10.GL_NICEST );
-    	
+
     	while( ! preloadlist.isEmpty() ) {
     		loadTexture( preloadlist.remove( 0 ) );
     	}
@@ -134,7 +133,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceChanged( GL10 gl, int width, int height ) {
 
     	// Sets the current view port to the new size.
-		//GLES10.glViewport(0, height, width, height);
     	GLES10.glViewport(0, 0, width, height);
 		// Select the projection matrix
 		GLES10.glMatrixMode(GL10.GL_PROJECTION);
@@ -143,9 +141,11 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 		
 		// Calculate the aspect ratio of the window
 		
-		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
-				100.0f);
-				
+	/*	GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
+				100.0f);*/
+		
+		GLU.gluOrtho2D(gl, 0.0f, (float) width, (float) height, (float)0.0);
+			
 		// Select the modelview matrix
 		GLES10.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
@@ -185,8 +185,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     public void drawPolygon( Polygon convexpoly ) {
     	
         GLES10.glFrontFace( GLES10.GL_CW );
-        
- //       GLES10.gl_CO
 
         GLES10.glEnableClientState( GLES10.GL_VERTEX_ARRAY );
         
