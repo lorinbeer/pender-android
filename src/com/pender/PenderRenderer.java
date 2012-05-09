@@ -96,6 +96,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	    this.drawPolygon( poly );
     	    
     	    
+    	    this.drawTexturedPolygon(poly, textureList.get(0) );
     	    
     	}
 
