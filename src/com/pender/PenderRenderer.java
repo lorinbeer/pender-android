@@ -192,7 +192,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         
         GLES10.glVertexPointer( 3, GLES10.GL_FLOAT, 0, convexpoly.getVertexBuffer() );
 
-        GLES10.glDrawElements( GLES10.GL_LINE_LOOP,
+        GLES10.glDrawElements( GLES10.GL_TRIANGLE_STRIP,
         		               convexpoly.getIndices().length,  
         					   GLES10.GL_UNSIGNED_SHORT, 
         					   convexpoly.getIndexBuffer() );
