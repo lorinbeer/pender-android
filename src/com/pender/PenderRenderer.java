@@ -79,7 +79,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	  
     	    GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
         
-        	//execScript( "draw();" );  
+        	execScript( "draw();" );  
     	    
     		float vert[] = { 
    	  		      -1.0f,  1.0f, 0.0f,
@@ -93,10 +93,9 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     	    Polygon poly = new Polygon( vert, ind );
     	    
-    	    this.drawPolygon( poly );
+    	 /*   this.drawPolygon( poly );
     	    
-    	    
-    	    this.drawTexturedPolygon(poly, textureList.get(0) );
+    	    this.drawTexturedPolygon(poly, textureList.get(0) );*/
     	    
     	}
 
