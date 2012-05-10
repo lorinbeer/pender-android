@@ -79,10 +79,10 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	  
     	//    GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
         
-        //	execScript( "draw();" );  
-    	    
+        	execScript( "draw();" );  
+    	/*    
     		float vert[] = { 
-   	  		      10.0f, 10.0f, 0.0f,
+   	  		      10.0f, 100.0f, 0.0f,
    	  		      10.0f, 40.0f, 0.0f,
    	  		      40.0f, 40.0f, 0.0f,
    	  		      40.0f, 10.0f, 0.0f,  
@@ -95,7 +95,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	   this.drawPolygon( poly );
     	    
     	    this.drawTexturedPolygon(poly, textureList.get(0) );
-    	    
+    	  */  
     	}
 
     }
@@ -196,9 +196,9 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         					   convexpoly.getIndexBuffer() );
 
         GLES10.glDisableClientState( GLES10.GL_VERTEX_ARRAY );
-    	
+    
     }
-       
+
     
     public void drawTexturedPolygon( Polygon convexpoly, Image texture ) {
 
@@ -224,7 +224,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MIN_FILTER, GLES10.GL_NEAREST ); 
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MAG_FILTER, GLES10.GL_LINEAR  ); 
 
-       int count = bmp.getWidth();
        GLUtils.texImage2D(GLES10.GL_TEXTURE_2D, 0, bmp, 0 );
      
       	mJSContext = Context.enter();
@@ -232,7 +231,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
      //  try {
       // 	String script = "Textures[\""+tex.name+"\"] = "+texid[0]+";";
-    	   String script = "var image = "+texid[0]+";";
+    	String script = "var image = "+texid[0]+";";
        	mJSContext.evaluateString(mJSScope, script, "Insert Texture", 0, null);
 
   //     } 
@@ -240,11 +239,19 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
    	      //  Log.d("Renderer.onSurfaceCreated",e.toString());
 
-  //     }
-       	Image im = new Image();
+  //     }		
+       	float vert[] = { 
+	      100.0f, 300f, 0.0f,
+	      100.0f, 428.0f, 0.0f,
+	      228.0f, 428.0f, 0.0f,
+	      228.0f, 300.0f, 0.0f,
+};
 
-       	im.setGLId( texid[0] );
-       	
+short[] ind = { 0, 1, 2, 0, 2, 3 };
+
+       	Polygon poly = new Polygon( vert, ind );
+       	Image im = new Image( texid[0], poly );
+
        	textureList.add( im );
 
     }

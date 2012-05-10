@@ -27,32 +27,54 @@ import java.nio.FloatBuffer;
 
 
 public class Image {
+	
+    public Image() {
 
-    public Image( ) {
-
-    	 ByteBuffer byteBuffer = ByteBuffer.allocateDirect( mTexMapCoords.length * 4);
-         byteBuffer.order(ByteOrder.nativeOrder());
-         mTextureBuffer = byteBuffer.asFloatBuffer();
-         mTextureBuffer.put(mTexMapCoords);
-         mTextureBuffer.position(0);
+    	initBuffers();
+         
          mGLId = 0;
    
     }
 
-    private FloatBuffer mTextureBuffer;
+    public Image( int glid, Polygon poly ) {
+    	
+    	initBuffers();
+    	
+    	mGLId = glid;
+    	
+    	mPoly = poly;
+    	
+    }
+    
+    public void initBuffers() {
+
+   	 ByteBuffer byteBuffer = ByteBuffer.allocateDirect( mTexMapCoords.length * 4);
+     byteBuffer.order(ByteOrder.nativeOrder());
+     mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
+     mTexMapCoordBuffer.put(mTexMapCoords);
+     mTexMapCoordBuffer.position(0);
+
+    }
+
     private float mTexMapCoords[] = {
     								0.0f, 0.0f,
     								0.0f, 1.0f,
     								1.0f, 1.0f,
     								1.0f, 0.0f
-    	        			/*	0.0f, 1.0f,upside downness
-    	        			    0.0f, 0.0f,
-    	        			    1.0f, 0.0f,
-    	        			    1.0f, 1.0f*/
     						   };
     public int getGLId() { return mGLId; }
     public void setGLId( int glid ) { mGLId = glid; }
-    public FloatBuffer getTextureBuffer() { return mTextureBuffer; }
+    public Polygon getPoly() { return mPoly; }
+    public void setPoly( Polygon poly ) { mPoly = poly; }
+    public FloatBuffer getTextureBuffer() { return mTexMapCoordBuffer; }
+    
+    //==========================================================================
+    
+    private Polygon mPoly; 
+    
     private int mGLId;
-
+    
+    private FloatBuffer mTexMapCoordBuffer;
+    
+    //==========================================================================
 }
