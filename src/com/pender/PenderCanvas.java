@@ -30,17 +30,11 @@ public class PenderCanvas {
 	
 	public PenderCanvas( PenderRenderer renderer ) {
 		
-		float vert[] = { /*
-				 0.0f, 100.0f, 0.0f,
-				 0.0f, 0.0f, 0.0f,
-				 100.0f, 0.0f, 0.0f,
-				 100.0f, 100.0f, 0.0f,
-				*/
-	  		      -1.0f,  1.0f, 0.0f,
-	  		      -1.0f, -1.0f, 0.0f,
-	  		       1.0f, -1.0f, 0.0f,
-	  		       1.0f,  1.0f, 0.0f,
-	  		       
+		float vert[] = { 
+	  		      100.0f, 300f, 0.0f,
+	  		      100.0f, 428.0f, 0.0f,
+	  		      228.0f, 428.0f, 0.0f,
+	  		      228.0f, 300.0f, 0.0f,
 	  	};
 
 	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
@@ -57,7 +51,8 @@ public class PenderCanvas {
 
     public void drawImage( int image, float dx, float dy) {
  
-        mRenderer.drawTexturedPolygon(mPoly, mImageList.get(image) );
+    	Image img = mImageList.get(image);
+        mRenderer.drawTexturedPolygon(img.getPoly(), img );
     	 
     } 
     
