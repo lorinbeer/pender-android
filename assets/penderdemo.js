@@ -1,26 +1,5 @@
-<<<<<<< HEAD
-
 //==============================================================================
 
-=======
-var Log = Packages.android.util.Log;
-var Image = Packages.com.pender.glaid.Image;
-var Math = Packages.java.lang.Math;
-
-Log.d("Renderer", "onSurfaceCreated, registering gl object");
-
-//==============================================================================
-
-var console = {
-        log : function (msg) {
-            Log.d("PenderLog", msg);
-        }
-    };
-
-//==============================================================================
-//==============================================================================
-
->>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 
 function Cat() {
 
@@ -51,11 +30,11 @@ function Cat() {
 
         this.frame += 1;
       //  Canvas.scale(0.5, 0.5);
-<<<<<<< HEAD
+
         Canvas.translate(10,10);
-=======
+
         Canvas.translate(this.xpos, this.ypos);
->>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
+
 
         Canvas.drawImage(this.frame, 0, 0);
 
@@ -88,10 +67,7 @@ function draw() {
     var i = 0;
 
     for (i = 0; i < catnumb; i += 1) {
-<<<<<<< HEAD
-=======
 
->>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
         cats[i].drawme();
 
     }
