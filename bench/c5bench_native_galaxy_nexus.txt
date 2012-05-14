@@ -1,0 +1,28 @@
+c5bench.com - html5 canvas benchmark for smartphones
+
+Benchmark Results - Galaxy Nexus
+====================================================
+Timer=0.0 ms / 650262.4 fps 
+clearRect=0.3 ms / 3612.2 fps 
+drawImage 8bit=1.2 ms / 859.7 fps 
+drawImage 8bit transparent=2.7 ms / 373.7 fps 
+drawImage 24bit=1.9 ms / 540.5 fps 
+drawImage 24bit random=1.8 ms / 541.0 fps 
+drawImage 24bit alpha=1.8 ms / 542.1 fps 
+drawImage 24bit single sprite=0.1 ms / 7833.8 fps 
+drawImageSlice 24bit sprite=0.2 ms / 6086.2 fps 
+drawImageSlice 24bit sprite+background=2.1 ms / 470.0 fps 
+drawImageSlice 24bit 
+8xsprite+background=3.3 ms / 304.3 fps Timer=10.2 ms / 98.2 fps 
+clearRect=10.7 ms / 93.6 fps drawImage 8bit=11.1 ms / 90.0 fps 
+drawImage 8bit transparent=12.4 ms / 80.8 fps 
+drawImage 24bit=12.4 ms / 80.9 fps 
+drawImage 24bit random=12.3 ms / 81.5 fps 
+drawImage 24bit alpha=12.5 ms / 80.3 fps 
+drawImage 24bit single sprite=10.7 ms / 93.7 fps 
+drawImageSlice 24bit sprite=10.6 ms / 94.0 fps 
+drawImageSlice 24bit 
+sprite+background=12.7 ms / 78.6 fps 
+drawImageSlice 24bit 
+8xsprite+background=14.8 ms / 67.7 fps 
+Score: 939

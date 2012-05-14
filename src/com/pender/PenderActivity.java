@@ -17,7 +17,11 @@
 
 package com.pender;
 
+<<<<<<< HEAD
 import java.io.BufferedReader;  
+=======
+import java.io.BufferedReader;
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,8 +45,13 @@ public class PenderActivity extends Activity {
         mGLView = new PenderView( this );
 
         initView();
+<<<<<<< HEAD
         ((PenderView) mGLView).execScript( readJS("penderandroidshim.js") );        
         ((PenderView) mGLView).execScript( readJS("penderdemo.js") );
+=======
+        
+        ((PenderView) mGLView).execScript( readJS() );
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
         //if init was not declared in penderdemo.js, the world explodes
         ((PenderView) mGLView).execScript( "init();" );
 
@@ -52,7 +61,11 @@ public class PenderActivity extends Activity {
  
     }
     
+<<<<<<< HEAD
     private String readJS( String jspath) {		
+=======
+    private String readJS() {		
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
     	
     	 BufferedReader reader = null;
     	
@@ -64,7 +77,11 @@ public class PenderActivity extends Activity {
 
 	  	    reader = new BufferedReader( 
 	  	    					new InputStreamReader( 
+<<<<<<< HEAD
 	  	    						al.open(jspath) ) ); //TODO: hardcoded magicks, needs to be spec'ed by argument
+=======
+	  	    						al.open("penderdemo.js") ) ); //TODO: hardcoded magicks, needs to be spec'ed by argument
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 	  	    String buf = "";
 	  	    while( ( buf = reader.readLine() ) != null ) {
 	  	    	

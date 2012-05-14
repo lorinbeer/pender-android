@@ -1,0 +1,31 @@
+c5bench.com - html5 canvas benchmark for smartphones
+
+Benchmark Results - Nexus S
+====================================================
+Timer=0.0 ms / 214895.5 fps 
+clearRect=1.0 ms / 1024.7 fps 
+drawImage 8bit=1.2 ms / 806.6 fps 
+drawImage 8bit transparent=4.6 ms / 217.6 fps 
+drawImage 24bit=3.6 ms / 276.1 fps 
+drawImage 24bit random=4.5 ms / 221.1 fps 
+drawImage 24bit alpha=3.9 ms / 255.4 fps 
+drawImage 24bit single sprite=0.2 ms / 4179.1 fps 
+drawImageSlice 24bit sprite=0.2 ms / 4663.8 fps 
+drawImageSlice 24bit 
+sprite+background=3.9 ms / 257.7 fps 
+drawImageSlice 24bit 
+8xsprite+background=6.3 ms / 159.9 fps 
+Timer=10.5 ms / 95.1 fps 
+clearRect=12.5 ms / 80.2 fps 
+drawImage 8bit=12.2 ms / 81.8 fps 
+drawImage 8bit transparent=16.8 ms / 59.6 fps 
+drawImage 24bit=14.4 ms / 69.2 fps 
+drawImage 24bit random=14.4 ms / 69.7 fps 
+drawImage 24bit alpha=14.6 ms / 68.4 fps 
+drawImage 24bit single sprite=10.7 ms / 93.5 fps 
+drawImageSlice 24bit sprite=10.7 ms / 93.2 fps 
+drawImageSlice 24bit 
+sprite+background=14.9 ms / 67.3 fps 
+drawImageSlice 24bit 
+8xsprite+background=19.1 ms / 52.4 fps 
+Score: 830 

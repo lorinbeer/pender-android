@@ -176,8 +176,17 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     }
     //==========================================================================
     //==========================================================================
+<<<<<<< HEAD
 
 /*
+=======
+    
+    /**
+     * draw a mesh
+     * this can be removed and placed in PenderCanvas
+     * currently there is an incesteous closed loop
+     */
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
     public void drawPolygon( Polygon convexpoly ) {
     	
         GLES10.glFrontFace( GLES10.GL_CW );
@@ -194,6 +203,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         GLES10.glDisableClientState( GLES10.GL_VERTEX_ARRAY );
     
     }
+<<<<<<< HEAD
 */
 /*
     public void drawImage( Image img ) {
@@ -204,11 +214,26 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	GLES10.glTexCoordPointer(2, GL10.GL_FLOAT, 0, img.getTextureBuffer() );
     	
     	drawPolygon( img.getPoly() );
+=======
+
+    
+    public void drawTexturedPolygon( Polygon convexpoly, Image texture ) {
+
+    	GLES10.glBindTexture(GL10.GL_TEXTURE_2D, texture.getGLId() );
+    	GLES10.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+    	
+    	GLES10.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texture.getTextureBuffer() );
+    	
+    	drawPolygon( convexpoly );
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
         
     	GLES10.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
     	
     }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 
     public void loadTexture( Bitmap bmp ) {
     	
@@ -255,14 +280,21 @@ short[] ind = { 0, 1, 2, 0, 2, 3 };
     
     
     private void initJSEngine() {
+<<<<<<< HEAD
     	  
+=======
+    	
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
         //Rhino Setup
         mJSContext = Context.enter();
   	    mJSScope = mJSContext.initStandardObjects();
   	    mJSContext.setOptimizationLevel(-1);
+<<<<<<< HEAD
   	    
   	    
   	    
+=======
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
         this.setupJS();
   	    Context.exit(); 
 
