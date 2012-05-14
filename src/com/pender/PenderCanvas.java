@@ -19,8 +19,11 @@ package com.pender;
 
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import javax.microedition.khronos.opengles.GL10;
 
+=======
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 import android.opengl.GLES10;
 
 import com.pender.glaid.Image;
@@ -52,11 +55,20 @@ public class PenderCanvas {
 	}
 
     public void drawImage( int image, float dx, float dy) {
+<<<<<<< HEAD
     	Image img = mImageList.get(image);
     	this.glDrawImage(img);
 //        mRenderer.drawImage(img);
     } 
 
+=======
+ 
+    	Image img = mImageList.get(image);
+        mRenderer.drawTexturedPolygon(img.getPoly(), img );
+    	 
+    } 
+    
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
     /**
      * 
      * @param image integer reference to the image
@@ -66,15 +78,22 @@ public class PenderCanvas {
      * @param dh image height
      */
     public void drawImage( int image, float dx, float dy, float dw, float dh){
+<<<<<<< HEAD
     	Image img = mImageList.get(image);
     	this.glDrawImage(img);
+=======
+
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
     }
 
     public void drawImage( int  image, float sx, float sy, float sw, float sh, 
                                        float dx, float dy, float dw, float dh) {
 
+<<<<<<< HEAD
     	Image img = mImageList.get(image);
     	this.glDrawImage(img);
+=======
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
     }
     
     //==========================================================================
@@ -112,6 +131,7 @@ public class PenderCanvas {
     Polygon mPoly;
     
     PenderRenderer mRenderer;
+<<<<<<< HEAD
    
     //========================================================================== 
     /**
@@ -149,4 +169,7 @@ public class PenderCanvas {
     	
     }
 
+=======
+    
+>>>>>>> 04636d3cb81a245705948df3a2012a7af567a6a8
 }
