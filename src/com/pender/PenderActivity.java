@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 
 import android.app.Activity;
@@ -47,11 +48,14 @@ public class PenderActivity extends Activity {
         mGLView = new PenderView( mHandler );
 
         initView();
+        
+        ArrayList<String> scripts = new ArrayList<String>();
 
-        ((PenderView) mGLView).execScript( readJS("penderandroidshim.js") );        
-        ((PenderView) mGLView).execScript( readJS("penderdemo.js") );
-        //if init was not declared in penderdemo.js, the world explodes
-        ((PenderView) mGLView).execScript( "init();" );
+        scripts.add(readJS("penderandroidshim.js") );
+        scripts.add(readJS("penderdemo.js") );
+        scripts.add("init();");
+        
+        ((PenderView)mGLView).execScripts(scripts);
 
     }
 

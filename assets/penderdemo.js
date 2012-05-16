@@ -141,42 +141,15 @@ function Cat() {
 
 //==============================================================================
 
-function init() {
-    console.log("loading images");
-    Pender.loadImage("client/assets/build_bot_map.png");
-
-
-
-    //var img = new Pender.loadImage( "client/assets/build_bot_map.png" );
-    //console.log(img);
-  //  img.src = "client/assets/build_bot_map.png";
-   // var anim = new Animation( img, 9, 4, 3, 254, 254, 1 );
-   // console.log( anim._frames );
-
-    //var sprite  = new AnimatedSprite(anim);
-
-/*
-    var i = 0;
-
-    for (i = 0; i < catnumb; i += 1) {
-        console.log("it's a new cat!");
-        cats[i] = new Cat();
-    }
-*/
-}
 
 //==============================================================================
 
 function draw() {
 
-    var i = 0;
-
-    for (i = 0; i < 0; i += 1) {
-
-      //  cats[i].drawme();
-
-    }
-
 }
 
-//==============================================================================
+function init() {
+    console.log("loading images");
+    console.log("whatwhat");
+    console.log(draw);
+}

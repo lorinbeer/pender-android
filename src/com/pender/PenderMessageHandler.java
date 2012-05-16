@@ -2,6 +2,7 @@ package com.pender;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,12 +28,10 @@ public class PenderMessageHandler extends Handler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-}
-		
-	
+	}
 	
 	public PenderActivity getActivity() { return mActivity; }
-	
+
 	private PenderActivity mActivity;
 	
 }
