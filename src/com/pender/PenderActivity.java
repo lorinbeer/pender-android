@@ -33,32 +33,36 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
+
+
+
 public class PenderActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        mGLView = new PenderView( this );
+
+        mHandler = new PenderMessageHandler(this);
+
+        mGLView = new PenderView( mHandler );
 
         initView();
+
         ((PenderView) mGLView).execScript( readJS("penderandroidshim.js") );        
         ((PenderView) mGLView).execScript( readJS("penderdemo.js") );
         //if init was not declared in penderdemo.js, the world explodes
         ((PenderView) mGLView).execScript( "init();" );
 
-      
-        loadImage();
-
- 
     }
-    
+
+    public PenderView getView() { return (PenderView)this.mGLView; }
+
     private String readJS( String jspath) {		
-    	
+
     	 BufferedReader reader = null;
-    	
+
     	 StringBuffer script = new StringBuffer();
-    	 
+
     	try {
 
 	  	    AssetManager al = this.getAssets(); //sharpshooting hulk
@@ -131,9 +135,12 @@ public class PenderActivity extends Activity {
 	
 	        final Bitmap temp = BitmapFactory.decodeStream(instream);
 	        
-	        ((PenderView) mGLView).loadTexture( temp );
+	        ((PenderView) mGLView).loadTexture( temp, 0 );
         }
     }
+
     private GLSurfaceView mGLView;
 
+    private PenderMessageHandler mHandler;
+    
 }
