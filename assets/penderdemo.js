@@ -125,12 +125,8 @@ function Cat() {
 
         this.frame += 1;
       //  Canvas.scale(0.5, 0.5);
-
         Canvas.translate(10,10);
-
         Canvas.translate(this.xpos, this.ypos);
-
-
         Canvas.drawImage(this.frame, 0, 0);
 
     };
@@ -143,13 +139,17 @@ function Cat() {
 
 
 //==============================================================================
+function init() {
+    console.log("loading images");
+    
+    var i = Pender.loadImage( "client/assets/build_bot_map.png" );
+
+    console.log(i);
+   // var i = Pender.loadImage( "client/assets/build_bot_map.png" );
+    //console.log(Pender);
+}
+
 
 function draw() {
 
-}
-
-function init() {
-    console.log("loading images");
-    console.log("whatwhat");
-    console.log(draw);
 }
