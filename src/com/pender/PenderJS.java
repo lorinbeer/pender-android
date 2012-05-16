@@ -20,11 +20,12 @@ public class PenderJS {
 	public PenderJS(PenderMessageHandler handler, Context ctx, Scriptable scope) {
 		mHandler = handler;
 		mImageMap = new HashMap<Integer,Image>();
-
+		mReady = true;
 		mJSScope = scope;
 	}
     //==========================================================================
-	public int loadImage( String path  ) {
+	public int loadImage (String path) {
+		mReady = false;
 		Message msg = new Message();
 		final String fpath = path;
 		int id = UUID.randomUUID().hashCode();
@@ -32,27 +33,24 @@ public class PenderJS {
 		msg.arg1 = 0;
 		msg.arg2 = id;
 		mHandler.dispatchMessage(msg);
-		
-    	mJSContext = Context.enter();
-    	mJSContext.setOptimizationLevel(-1);
-    	String script = "";
-    	mJSContext.evaluateString (mJSScope, 
-        						   script, 
-        						   "load script", 
-        						   0, 
-        						   null);
-	    Context.exit();
+		mImageMap.put(id, null);
 	    return id;
 	}
 	//==========================================================================
-	public void _addImage( int id, Image img ) {
-		mImageMap.put(id,img);
+	public Image getImage (int id) {
+		return mImageMap.get(id);
+	}
+    //==========================================================================
+	public boolean getState() {
+		return mReady;
 	}
 	//==========================================================================
-	//==========================================================================
 	private PenderMessageHandler mHandler;
-	HashMap<Integer,Image> mImageMap;
-	Context mJSContext;
-	Scriptable mJSScope;
+	private HashMap<Integer,Image> mImageMap;
+	
+	private boolean mReady;
+	
+	private Context mJSContext;
+	private Scriptable mJSScope;
 	//==========================================================================
 }

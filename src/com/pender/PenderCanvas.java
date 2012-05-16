@@ -28,7 +28,6 @@ import com.pender.glaid.Polygon;
 public class PenderCanvas {
 	
 	public PenderCanvas( PenderRenderer renderer ) {
-		
 		float vert[] = { 
 	  		      100.0f, 300f, 0.0f,
 	  		      100.0f, 428.0f, 0.0f,
@@ -39,9 +38,7 @@ public class PenderCanvas {
 	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
 		mPoly = new Polygon( vert, ind );
-		
 		mRenderer = renderer;
-		
 		mImageList = new ArrayList<Image>();
 	}
 
@@ -86,15 +83,7 @@ public class PenderCanvas {
     @SuppressWarnings("unchecked")
 	public void setImageList( ArrayList<Image> imagelist ) {
     	mImageList = (ArrayList<Image>) imagelist.clone();
-    }
-    //==========================================================================
-    //==========================================================================
-    private ArrayList<Image> mImageList;
-    
-    Polygon mPoly;
-    
-    PenderRenderer mRenderer;
-   
+    }   
     //========================================================================== 
     /**
      * draw a mesh
@@ -123,5 +112,10 @@ public class PenderCanvas {
     	drawPolygon( image.getPoly() );
     	GLES10.glDisableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
     }
+    //==========================================================================
+    //==========================================================================
+    private ArrayList<Image> mImageList;
+    Polygon mPoly;
+    PenderRenderer mRenderer;
     //==========================================================================
 }

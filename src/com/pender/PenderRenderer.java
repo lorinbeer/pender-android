@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Date;
 import java.util.Iterator;
 
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -45,18 +44,17 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     //==========================================================================
     public PenderRenderer(PenderMessageHandler handler) {
         super();
-
         //framerate
         mLastFrame = 0;
         mfps = 0;
         mSetfps = 60;
         
         mCanvas = new PenderCanvas(this);
-
         mTextureMap = new HashMap<Integer,Image>();
         mLoadMap = new HashMap<Integer,Bitmap>();
-        setupJS();
         mPenderJS = new PenderJS(handler,mJSContext,mJSScope);
+
+        setupJS();
     }
     //==========================================================================
     @Override
@@ -131,7 +129,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     //==========================================================================
     /**
      *	setup the js context running in this thread
-     *	
      */
     public void setupJS() {
     	mJSContext = Context.enter();
@@ -149,7 +146,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 	    //expose PenderJS object to Rhino as Pender
 	    Object penderjs = Context.javaToJS( mPenderJS, mJSScope );
 	    ScriptableObject.putProperty(mJSScope, "Pender", penderjs);
-
 	    Context.exit();
     }
 
@@ -164,21 +160,13 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MAG_FILTER, GLES10.GL_LINEAR  ); 
 
        GLUtils.texImage2D(GLES10.GL_TEXTURE_2D, 0, bmp, 0 );
-
+/*
        mJSContext = Context.enter();
        mJSContext.setOptimizationLevel(-1); 
 
-     //  try {
-      // 	String script = "Textures[\""+tex.name+"\"] = "+texid[0]+";";
        String script = "var image = "+texid[0]+";";
        mJSContext.evaluateString(mJSScope, script, "Insert Texture", 0, null);
-
-  //     } 
-   //    catch (Exception e) {
-
-   	      //  Log.d("Renderer.onSurfaceCreated",e.toString());
-
-  //     }		
+*/
        	float vert[] = { 
 	      100.0f, 300f, 0.0f,
 	      100.0f, 428.0f, 0.0f,
@@ -199,15 +187,18 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     //========================================================================== 
     //==========================================================================   
     public void execScript (String script) {
-    	
         mJSContext = Context.enter();
         mJSContext.setOptimizationLevel(-1);
         //if there is a syntax error in the script, the world explodes
-        mJSContext.evaluateString (mJSScope, 
-        						   script, 
-        						   "load script", 
-        						   0, 
-        						   null);
+        try {
+        	mJSContext.evaluateString (mJSScope, 
+        							   script, 
+        						       "load script", 
+        						       0, 
+        						       null);
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
         Context.exit();
     }
     //==========================================================================
@@ -221,10 +212,11 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     private HashMap<Integer,Image> mTextureMap;
     private HashMap<Integer,Bitmap> mLoadMap;
 
-    private Context mJSContext;
-    private Scriptable mJSScope;
-    
     private PenderCanvas mCanvas;
     private PenderJS mPenderJS;
+    
+	
+	Context mJSContext;
+	Scriptable mJSScope;
     //==========================================================================
 }
