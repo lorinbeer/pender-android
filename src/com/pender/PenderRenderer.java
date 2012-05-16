@@ -42,9 +42,12 @@ import com.pender.glaid.Polygon;
 
 public class PenderRenderer implements GLSurfaceView.Renderer {
 
-    public PenderRenderer() {
+    public PenderRenderer(PenderMessageHandler handler) {
 
         super();
+        
+        mHandler = handler;
+        mPenderJS = new PenderJS(handler);
 
         preloadlist = new ArrayList<Bitmap>();
         
@@ -120,12 +123,12 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	GLES10.glDepthFunc( GLES10.GL_LEQUAL );
     	
     	GLES10.glHint( GLES10.GL_PERSPECTIVE_CORRECTION_HINT, GLES10.GL_NICEST );
-
+/*
     	while( ! preloadlist.isEmpty() ) {
     		loadTexture( preloadlist.remove( 0 ) );
     	}
-
-        this.setupJS();
+*/
+        this.setupJS();  
         
     }
 
@@ -135,10 +138,9 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	// Sets the current view port to the new size.
     	GLES10.glViewport(0, 0, width, height);
 		// Select the projection matrix
-		GLES10.glMatrixMode(GL10.GL_PROJECTION);
+		GLES10.glMatrixMode(GL10.GL_PROJECTION);  
 		// Reset the projection matrix
 		GLES10.glLoadIdentity();
-		
 		// Calculate the aspect ratio of the window
 		
 	/*	GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
@@ -164,19 +166,26 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	
     	mJSContext = Context.enter();
     	mJSContext.setOptimizationLevel(-1);
-
+    	
         Object jscanvas = Context.javaToJS(mCanvas,mJSScope);
 	    ScriptableObject.putProperty(mJSScope, "Canvas", jscanvas);
 	    
 	    Object setting_fps = Context.javaToJS( mSetfps, mJSScope );
 	    ScriptableObject.putProperty( mJSScope, "setting_fps", setting_fps );
+
+	    Object penderjs = Context.javaToJS( mPenderJS, mJSScope );
+	    ScriptableObject.putProperty(mJSScope, "Pender", penderjs);
 	    
 	    Context.exit();
 
     }
     //==========================================================================
     //==========================================================================
-
+    public void setMessageHandler( PenderMessageHandler handler ) {
+    	
+    	mHandler = handler;
+    	
+    }
 /*
     public void drawPolygon( Polygon convexpoly ) {
     	
@@ -210,13 +219,13 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     }
 */
 
-    public void loadTexture( Bitmap bmp ) {
+    public void loadTexture( Bitmap bmp, int id ) {
     	
        int[] texid = new int[1];
  
        GLES10.glGenTextures(1, texid, 0); //generate a single new texture id
        GLES10.glBindTexture(GL10.GL_TEXTURE_2D, texid[0] );
-
+       	
        //set texture parameters
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MIN_FILTER, GLES10.GL_NEAREST ); 
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MAG_FILTER, GLES10.GL_LINEAR  ); 
@@ -242,9 +251,9 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 	      100.0f, 428.0f, 0.0f,
 	      228.0f, 428.0f, 0.0f,
 	      228.0f, 300.0f, 0.0f,
-};
+       	};
 
-short[] ind = { 0, 1, 2, 0, 2, 3 };
+       	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
        	Polygon poly = new Polygon( vert, ind );
        	Image im = new Image( texid[0], poly );
@@ -256,7 +265,7 @@ short[] ind = { 0, 1, 2, 0, 2, 3 };
     
     private void initJSEngine() {
     	  
-        //Rhino Setup
+        //Rhino Setup  
         mJSContext = Context.enter();
   	    mJSScope = mJSContext.initStandardObjects();
   	    mJSContext.setOptimizationLevel(-1);
@@ -264,7 +273,7 @@ short[] ind = { 0, 1, 2, 0, 2, 3 };
   	    
   	    
         this.setupJS();
-  	    Context.exit(); 
+  	    Context.exit();   
 
     } 
     
@@ -284,7 +293,7 @@ short[] ind = { 0, 1, 2, 0, 2, 3 };
         Context.exit();
     }
     
-    public void addToPreload( Bitmap bmp ) { preloadlist.add( bmp ); }
+    public void addToPreload( Bitmap bmp, int id ) { preloadlist.add( bmp ); }
     
     private long mLastFrame;
     
@@ -295,10 +304,12 @@ short[] ind = { 0, 1, 2, 0, 2, 3 };
     private ArrayList<Bitmap> preloadlist;
     
     private ArrayList<Image> textureList;
-    
+
     private Context mJSContext;
     private Scriptable mJSScope;
     
     private PenderCanvas mCanvas;
+    //private PenderMessageHandler mHandler;
+    private PenderJS mPenderJS;
 
 }
