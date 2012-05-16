@@ -18,9 +18,10 @@
 package com.pender;
 
 
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Date;
+import java.util.Iterator;
+
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -41,97 +42,69 @@ import com.pender.glaid.Polygon;
 
 
 public class PenderRenderer implements GLSurfaceView.Renderer {
-
+    //==========================================================================
     public PenderRenderer(PenderMessageHandler handler) {
-
         super();
-        
-        mHandler = handler;
-        mPenderJS = new PenderJS(handler);
 
-        preloadlist = new ArrayList<Bitmap>();
-        
-        textureList = new ArrayList<Image>();
-        
+        //framerate
         mLastFrame = 0;
         mfps = 0;
         mSetfps = 60;
         
         mCanvas = new PenderCanvas(this);
-        
-        initJSEngine();
- 
-    }
 
+        mTextureMap = new HashMap<Integer,Image>();
+        mLoadMap = new HashMap<Integer,Bitmap>();
+        setupJS();
+        mPenderJS = new PenderJS(handler,mJSContext,mJSScope);
+    }
+    //==========================================================================
     @Override
     public void onDrawFrame( GL10 gl ) {
+    	if (!mLoadMap.isEmpty()) {
+    		Iterator<Integer> it = mLoadMap.keySet().iterator();
+    		
+    		while(it.hasNext()) {
+    			int key = (Integer)it.next();
+    			this.loadTexture (key, mLoadMap.get(key));
+    			it.remove ();
+    		}
+    	}
+
     	long nowframe = new Date().getTime();
   
     	if( (nowframe - mLastFrame) > 1.0/mSetfps ) {
-
     		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
     	    mLastFrame = nowframe;
-    	    	mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
+    	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
+    	    Log.d("fps",String.valueOf(mfps));
 
-    	    	Log.d("fps",String.valueOf(mfps));
-    		
     		GLES10.glClear( GLES10.GL_COLOR_BUFFER_BIT | 
     						GLES10.GL_DEPTH_BUFFER_BIT );
-    	
+
     		GLES10.glLoadIdentity();  
-    	  
-    	//    GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
-        
-        	execScript( "draw();" );  
-    	/*    
-    		float vert[] = { 
-   	  		      10.0f, 100.0f, 0.0f,
-   	  		      10.0f, 40.0f, 0.0f,
-   	  		      40.0f, 40.0f, 0.0f,
-   	  		      40.0f, 10.0f, 0.0f,  
-   	  		};
 
-    		short[] ind = { 0, 1, 2, 0, 2, 3 };
-
-    	    Polygon poly = new Polygon( vert, ind );
-    	    
-    	   this.drawPolygon( poly );
-    	    
-    	    this.drawTexturedPolygon(poly, textureList.get(0) );
-    	  */  
+    		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
+        	execScript ("draw();");
     	}
-
     }
-
+    //==========================================================================
     @Override
     public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
-    	
-    	GLES10.glClearColor( 1.0f, 0.0f, 0.0f, 0.5f );
-    	
-    	GLES10.glShadeModel( GLES10.GL_SMOOTH );
-    	
-    	GLES10.glClearDepthf( 1.0f );
-    	
-    	GLES10.glEnable( GLES10.GL_DEPTH_TEST );
-    	
-		GLES10.glEnable(GLES10.GL_TEXTURE_2D); 
-		
-		GLES10.glEnable( GL10.GL_BLEND );
-    	
-    	GLES10.glBlendFunc( GLES10.GL_SRC_ALPHA, GLES10.GL_ONE_MINUS_SRC_ALPHA );	
-	
-    	GLES10.glDepthFunc( GLES10.GL_LEQUAL );
-    	
-    	GLES10.glHint( GLES10.GL_PERSPECTIVE_CORRECTION_HINT, GLES10.GL_NICEST );
-/*
-    	while( ! preloadlist.isEmpty() ) {
-    		loadTexture( preloadlist.remove( 0 ) );
-    	}
-*/
-        this.setupJS();  
-        
+    	//opengl setup
+    	GLES10.glClearColor (1.0f, 0.0f, 0.0f, 0.5f);
+    	GLES10.glShadeModel (GLES10.GL_SMOOTH);
+    	GLES10.glClearDepthf (1.0f);
+    	GLES10.glEnable (GLES10.GL_DEPTH_TEST);
+		GLES10.glEnable (GLES10.GL_TEXTURE_2D);
+		GLES10.glEnable (GL10.GL_BLEND);    	
+    	GLES10.glBlendFunc (GLES10.GL_SRC_ALPHA, 
+    						GLES10.GL_ONE_MINUS_SRC_ALPHA);
+    	GLES10.glDepthFunc (GLES10.GL_LEQUAL);
+    	GLES10.glHint (GLES10.GL_PERSPECTIVE_CORRECTION_HINT, 
+    				   GLES10.GL_NICEST);
     }
-
+    //==========================================================================
     @Override
     public void onSurfaceChanged( GL10 gl, int width, int height ) {
 
@@ -154,91 +127,51 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 		GLES10.glLoadIdentity();
 
     }
-
     //==========================================================================
     //==========================================================================
     /**
-     * 
+     *	setup the js context running in this thread
+     *	
      */
     public void setupJS() {
-
-    	mCanvas.setImageList( textureList );
-    	
     	mJSContext = Context.enter();
+	    mJSScope = mJSContext.initStandardObjects();
     	mJSContext.setOptimizationLevel(-1);
-    	
+  
+    	//expose Canvas object to rhino
         Object jscanvas = Context.javaToJS(mCanvas,mJSScope);
 	    ScriptableObject.putProperty(mJSScope, "Canvas", jscanvas);
-	    
+
+	    //expose framerate setting to rhino
 	    Object setting_fps = Context.javaToJS( mSetfps, mJSScope );
 	    ScriptableObject.putProperty( mJSScope, "setting_fps", setting_fps );
 
+	    //expose PenderJS object to Rhino as Pender
 	    Object penderjs = Context.javaToJS( mPenderJS, mJSScope );
 	    ScriptableObject.putProperty(mJSScope, "Pender", penderjs);
-	    
+
 	    Context.exit();
-
     }
+
     //==========================================================================
-    //==========================================================================
-    public void setMessageHandler( PenderMessageHandler handler ) {
-    	
-    	mHandler = handler;
-    	
-    }
-/*
-    public void drawPolygon( Polygon convexpoly ) {
-    	
-        GLES10.glFrontFace( GLES10.GL_CW );
-
-        GLES10.glEnableClientState( GLES10.GL_VERTEX_ARRAY );
-        
-        GLES10.glVertexPointer( 3, GLES10.GL_FLOAT, 0, convexpoly.getVertexBuffer() );
-
-        GLES10.glDrawElements( GLES10.GL_TRIANGLE_STRIP,
-        		               convexpoly.getIndices().length,  
-        					   GLES10.GL_UNSIGNED_SHORT, 
-        					   convexpoly.getIndexBuffer() );
-
-        GLES10.glDisableClientState( GLES10.GL_VERTEX_ARRAY );
-    
-    }
-*/
-/*
-    public void drawImage( Image img ) {
-
-    	GLES10.glBindTexture(GL10.GL_TEXTURE_2D, img.getGLId() );
-    	GLES10.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-    	
-    	GLES10.glTexCoordPointer(2, GL10.GL_FLOAT, 0, img.getTextureBuffer() );
-    	
-    	drawPolygon( img.getPoly() );
-        
-    	GLES10.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-    	
-    }
-*/
-
-    public void loadTexture( Bitmap bmp, int id ) {
-    	
+    public void loadTexture (int id, Bitmap bmp) {
        int[] texid = new int[1];
- 
        GLES10.glGenTextures(1, texid, 0); //generate a single new texture id
        GLES10.glBindTexture(GL10.GL_TEXTURE_2D, texid[0] );
-       	
+
        //set texture parameters
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MIN_FILTER, GLES10.GL_NEAREST ); 
        GLES10.glTexParameterf(GLES10.GL_TEXTURE_2D, GLES10.GL_TEXTURE_MAG_FILTER, GLES10.GL_LINEAR  ); 
 
        GLUtils.texImage2D(GLES10.GL_TEXTURE_2D, 0, bmp, 0 );
-     
-      	mJSContext = Context.enter();
-    	mJSContext.setOptimizationLevel(-1); 
+
+       mJSContext = Context.enter();
+       mJSContext.setOptimizationLevel(-1); 
 
      //  try {
       // 	String script = "Textures[\""+tex.name+"\"] = "+texid[0]+";";
-    	String script = "var image = "+texid[0]+";";
-       	mJSContext.evaluateString(mJSScope, script, "Insert Texture", 0, null);
+       String script = "var image = "+texid[0]+";";
+       mJSContext.evaluateString(mJSScope, script, "Insert Texture", 0, null);
 
   //     } 
    //    catch (Exception e) {
@@ -255,61 +188,43 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
        	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
-       	Polygon poly = new Polygon( vert, ind );
-       	Image im = new Image( texid[0], poly );
-
-       	textureList.add( im );
-
+       	Polygon poly = new Polygon (vert, ind);
+       	Image img = new Image (texid[0], poly);
+       	mTextureMap.put (id, img);
     }
-    
-    
-    private void initJSEngine() {
-    	  
-        //Rhino Setup  
-        mJSContext = Context.enter();
-  	    mJSScope = mJSContext.initStandardObjects();
-  	    mJSContext.setOptimizationLevel(-1);
-  	    
-  	    
-  	    
-        this.setupJS();
-  	    Context.exit();   
-
-    } 
-    
-    //==========================================================================
-    //==========================================================================
-    
-    public void execScript( String script ) {
+    //========================================================================== 
+    public void requestLoad (int id, Bitmap bmp) {
+    	mLoadMap.put(id, bmp);
+    }
+    //========================================================================== 
+    //==========================================================================   
+    public void execScript (String script) {
     	
         mJSContext = Context.enter();
         mJSContext.setOptimizationLevel(-1);
         //if there is a syntax error in the script, the world explodes
-        Object result = mJSContext.evaluateString( mJSScope, 
-        										   script, 
-        										   "load script", 
-        										   0, 
-        										   null);
+        mJSContext.evaluateString (mJSScope, 
+        						   script, 
+        						   "load script", 
+        						   0, 
+        						   null);
         Context.exit();
     }
-    
-    public void addToPreload( Bitmap bmp, int id ) { preloadlist.add( bmp ); }
-    
+    //==========================================================================
+
+    //==========================================================================
+    //==========================================================================
     private long mLastFrame;
-    
     private long mfps;
-    
     private int mSetfps;
     
-    private ArrayList<Bitmap> preloadlist;
-    
-    private ArrayList<Image> textureList;
+    private HashMap<Integer,Image> mTextureMap;
+    private HashMap<Integer,Bitmap> mLoadMap;
 
     private Context mJSContext;
     private Scriptable mJSScope;
     
     private PenderCanvas mCanvas;
-    //private PenderMessageHandler mHandler;
     private PenderJS mPenderJS;
-
+    //==========================================================================
 }

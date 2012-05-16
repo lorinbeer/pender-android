@@ -29,52 +29,40 @@ import java.nio.FloatBuffer;
 public class Image {
 	
     public Image() {
-
     	initBuffers();
-         
          mGLId = 0;
-   
     }
-
+    //==========================================================================
     public Image( int glid, Polygon poly ) {
-    	
     	initBuffers();
-    	
     	mGLId = glid;
-    	
     	mPoly = poly;
-    	
     }
-    
+    //==========================================================================
     public void initBuffers() {
-
-   	 ByteBuffer byteBuffer = ByteBuffer.allocateDirect( mTexMapCoords.length * 4);
-     byteBuffer.order(ByteOrder.nativeOrder());
-     mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
-     mTexMapCoordBuffer.put(mTexMapCoords);
-     mTexMapCoordBuffer.position(0);
-
+    	ByteBuffer byteBuffer = ByteBuffer.allocateDirect( mTexMapCoords.length * 4);
+    	byteBuffer.order(ByteOrder.nativeOrder());
+    	mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
+    	mTexMapCoordBuffer.put(mTexMapCoords);
+    	mTexMapCoordBuffer.position(0);
     }
-
+    //==========================================================================
     private float mTexMapCoords[] = {
     								0.0f, 0.0f,
     								0.0f, 1.0f,
     								1.0f, 1.0f,
     								1.0f, 0.0f
     						   };
+    //==========================================================================
     public int getGLId() { return mGLId; }
     public void setGLId( int glid ) { mGLId = glid; }
     public Polygon getPoly() { return mPoly; }
     public void setPoly( Polygon poly ) { mPoly = poly; }
     public FloatBuffer getTextureBuffer() { return mTexMapCoordBuffer; }
-    
     //==========================================================================
-    
-    private Polygon mPoly; 
-    
+    private Polygon mPoly;
     private int mGLId;
-    
     private FloatBuffer mTexMapCoordBuffer;
-    
+    //==========================================================================
     //==========================================================================
 }

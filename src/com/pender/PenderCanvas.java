@@ -18,14 +18,11 @@
 package com.pender;
 
 import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES10;
 
 import com.pender.glaid.Image;
 import com.pender.glaid.Polygon;
-
 
 
 public class PenderCanvas {
@@ -46,16 +43,11 @@ public class PenderCanvas {
 		mRenderer = renderer;
 		
 		mImageList = new ArrayList<Image>();
-		
-		
-		
 	}
 
-    public void drawImage( int image, float dx, float dy) {
-    	Image img = mImageList.get(image);
+    public void drawImage( Image img, float dx, float dy) {
     	this.glDrawImage(img);
-//        mRenderer.drawImage(img);
-    } 
+   } 
 
     /**
      * 
@@ -65,49 +57,38 @@ public class PenderCanvas {
      * @param dw image width
      * @param dh image height
      */
-    public void drawImage( int image, float dx, float dy, float dw, float dh){
-    	Image img = mImageList.get(image);
+    public void drawImage( Image img, float dx, float dy, float dw, float dh) {
     	this.glDrawImage(img);
     }
 
-    public void drawImage( int  image, float sx, float sy, float sw, float sh, 
+    public void drawImage( Image  img, float sx, float sy, float sw, float sh, 
                                        float dx, float dy, float dw, float dh) {
-
-    	Image img = mImageList.get(image);
     	this.glDrawImage(img);
-    	
     }
-    
     //==========================================================================
     //==========================================================================
-    
     public void scale( float x, float y ) {
-    	
     	//awesome
     	GLES10.glScalef(x, y, 0.0f);
-    	
     }
-    
+    //==========================================================================
     public void rotate( float angle ) {
-    	
     	//this is problematic, and will require some creativity
     	//for now the center of rotation will always be about the origin
     	GLES10.glRotatef( angle , 0.0f, 0.0f, 0.0f);
-    	
     }
-    
+    //==========================================================================
     public void translate( float x, float y ) {
-    	
         //awesome
         GLES10.glTranslatef( x, y, 0.0f );
-    	
     }
-
-	
+    //==========================================================================
     @SuppressWarnings("unchecked")
 	public void setImageList( ArrayList<Image> imagelist ) {
     	mImageList = (ArrayList<Image>) imagelist.clone();
     }
+    //==========================================================================
+    //==========================================================================
     private ArrayList<Image> mImageList;
     
     Polygon mPoly;
@@ -121,33 +102,26 @@ public class PenderCanvas {
      * currently there is an incesteous closed loop
      */
     public void drawPolygon( Polygon convexpoly ) {
-    	
-        GLES10.glFrontFace( GLES10.GL_CW );
-
-        GLES10.glEnableClientState( GLES10.GL_VERTEX_ARRAY );
-        
-        GLES10.glVertexPointer( 3, GLES10.GL_FLOAT, 0, convexpoly.getVertexBuffer() );
-
-        GLES10.glDrawElements( GLES10.GL_TRIANGLE_STRIP,
+        GLES10.glFrontFace (GLES10.GL_CW);
+        GLES10.glEnableClientState (GLES10.GL_VERTEX_ARRAY);
+        GLES10.glVertexPointer (3, GLES10.GL_FLOAT, 0, 
+        						convexpoly.getVertexBuffer() );
+        GLES10.glDrawElements (GLES10.GL_TRIANGLE_STRIP,
         		               convexpoly.getIndices().length,  
         					   GLES10.GL_UNSIGNED_SHORT, 
-        					   convexpoly.getIndexBuffer() );
-
-        GLES10.glDisableClientState( GLES10.GL_VERTEX_ARRAY );
-    
+        					   convexpoly.getIndexBuffer());
+        GLES10.glDisableClientState (GLES10.GL_VERTEX_ARRAY);
     }
     //==========================================================================     
     public void glDrawImage( Image image ) {
-
-    	GLES10.glBindTexture(GL10.GL_TEXTURE_2D, image.getGLId() );
-    	GLES10.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-    	
-    	GLES10.glTexCoordPointer(2, GL10.GL_FLOAT, 0, image.getTextureBuffer() );
-    	
+    	GLES10.glBindTexture (GL10.GL_TEXTURE_2D, image.getGLId() );
+    	GLES10.glEnableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
+    	GLES10.glTexCoordPointer (2,
+    							  GL10.GL_FLOAT, 
+    							  0,
+    							  image.getTextureBuffer() );
     	drawPolygon( image.getPoly() );
-        
-    	GLES10.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-    	
+    	GLES10.glDisableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
     }
-
+    //==========================================================================
 }
