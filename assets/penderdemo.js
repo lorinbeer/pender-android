@@ -91,11 +91,6 @@ function AnimatedSprite(anim) {
 
 //==============================================================================
 
-
-
-
-
-
 function Cat() {
 
     this.frame = 0;
@@ -151,5 +146,5 @@ function init() {
 
 
 function draw() {
-
+    
 }
