@@ -131,20 +131,18 @@ function Cat() {
 //==============================================================================
 
 //==============================================================================
-
-
+var buildbotid = null;
 //==============================================================================
 function init() {
     console.log("loading images");
     
-    var i = Pender.loadImage( "client/assets/build_bot_map.png" );
+    buildbotid = Pender.loadImage( "client/assets/build_bot_map.png" );
 
     console.log(i);
-   // var i = Pender.loadImage( "client/assets/build_bot_map.png" );
     //console.log(Pender);
 }
 
 
 function draw() {
-    
+    Canvas.drawImage (Pender.getImage(buildbotid), 0, 0);
 }
