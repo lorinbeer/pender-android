@@ -67,7 +67,7 @@ public class PenderCanvas {
 		float vert[] = { 
 	  		      dw, 0.0f, 0.0f,
 	  		      dw,   dh, 0.0f,
-	  		      0.0f, dh,
+	  		      0.0f, dh, 0.0f,
 	  		      0.0f, 0.0f, 0.0f,
 	  	};
 	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
@@ -94,8 +94,20 @@ public class PenderCanvas {
      * @param dw image width
      * @param dh image height
      */
-    public void drawImage( Image  img, float sx, float sy, float sw, float sh, 
-                                       float dx, float dy, float dw, float dh) {
+    public void drawImage( Image img, float sx, float sy, float sw, float sh, 
+                                      float dx, float dy, float dw, float dh) {
+		float vert[] = { 
+	  		      dw, 0.0f, 0.0f,
+	  		      dw,   dh, 0.0f,
+	  		      0.0f, dh, 0.0f,
+	  		      0.0f, 0.0f, 0.0f,
+	  	};
+	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
+	  	
+	  	Polygon poly = new Polygon (vert,ind);
+	  	img.setPoly(poly);
+    	img.setTexCoords(sx, sy, sw, sh);
+    	
     	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
     	GLES10.glPushMatrix ();
     	GLES10.glTranslatef (dx, dy, 0.0f);

@@ -15,54 +15,67 @@
  *
  */
 
-
 package com.pender.glaid;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-
-
-
-
 public class Image {
 	
-    public Image() {
-    	initBuffers();
+    public Image () {
+    	initBuffers ();
          mGLId = 0;
+         mWidth = 0;
+         mHeight = 0;
     }
     //==========================================================================
-    public Image( int glid, Polygon poly ) {
+    public Image (int glid, Polygon poly,float width, float height) {
     	initBuffers();
     	mGLId = glid;
     	mPoly = poly;
+    	mWidth = width;
+        mHeight = height;
     }
     //==========================================================================
-    public void initBuffers() {
-    	ByteBuffer byteBuffer = ByteBuffer.allocateDirect( mTexMapCoords.length * 4);
-    	byteBuffer.order(ByteOrder.nativeOrder());
+    public void initBuffers () {
+    	ByteBuffer byteBuffer = ByteBuffer.allocateDirect (mTexMapCoords.length * 4);
+    	byteBuffer.order (ByteOrder.nativeOrder());
     	mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
-    	mTexMapCoordBuffer.put(mTexMapCoords);
-    	mTexMapCoordBuffer.position(0);
+    	mTexMapCoordBuffer.put (mTexMapCoords);
+    	mTexMapCoordBuffer.position (0);
     }
     //==========================================================================
-    private float mTexMapCoords[] = {
+    public void setTexCoords (float tx, float ty, float w, float h) {
+        float texcoords [] = { tx / mWidth    ,  ty / mHeight,
+        					   tx / mWidth    , (ty+h) / mHeight,
+        					   (tx+w) / mWidth, (ty+h) / mHeight,
+        					   (tx+w) / mWidth,  ty / mHeight
+        };
+    	ByteBuffer byteBuffer = ByteBuffer.allocateDirect (texcoords.length * 4);
+    	byteBuffer.order (ByteOrder.nativeOrder());
+    	mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
+    	mTexMapCoordBuffer.put (texcoords);
+    	mTexMapCoordBuffer.position (0);
+    }
+    //==========================================================================
+    private float mTexMapCoords [] = {
     								0.0f, 0.0f,
     								0.0f, 1.0f,
     								1.0f, 1.0f,
     								1.0f, 0.0f
     						   };
     //==========================================================================
-    public int getGLId() { return mGLId; }
-    public void setGLId( int glid ) { mGLId = glid; }
-    public Polygon getPoly() { return mPoly; }
-    public void setPoly( Polygon poly ) { mPoly = poly; }
-    public FloatBuffer getTextureBuffer() { return mTexMapCoordBuffer; }
+    public int getGLId () { return mGLId; }
+    public void setGLId (int glid) { mGLId = glid; }
+    public Polygon getPoly () { return mPoly; }
+    public void setPoly (Polygon poly) { mPoly = poly; }
+    public FloatBuffer getTextureBuffer () { return mTexMapCoordBuffer; }
     //==========================================================================
     private Polygon mPoly;
     private int mGLId;
     private FloatBuffer mTexMapCoordBuffer;
-    //==========================================================================
+    float mWidth;
+    float mHeight;
     //==========================================================================
 }

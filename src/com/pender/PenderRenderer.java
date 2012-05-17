@@ -176,7 +176,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
        	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
        	Polygon poly = new Polygon (vert, ind);
-       	Image img = new Image (texid[0], poly);
+       	Image img = new Image (texid[0], poly,1024,1024);
        	mPenderJS.setImage(id, img);
     }
     //========================================================================== 
