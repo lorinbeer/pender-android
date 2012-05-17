@@ -40,6 +40,7 @@ public class PenderCanvas {
 		mRenderer = renderer;
 	}
 	//==========================================================================
+	//==========================================================================
 	/**
 	 * 
 	 * @param img
@@ -63,6 +64,17 @@ public class PenderCanvas {
      * @param dh image height
      */
     public void drawImage( Image img, float dx, float dy, float dw, float dh) {
+		float vert[] = { 
+	  		      dw, 0.0f, 0.0f,
+	  		      dw,   dh, 0.0f,
+	  		      0.0f, dh,
+	  		      0.0f, 0.0f, 0.0f,
+	  	};
+	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
+	  	
+	  	Polygon poly = new Polygon (vert,ind);
+	  	img.setPoly(poly);
+	  	
     	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
     	GLES10.glPushMatrix ();
     	GLES10.glTranslatef (dx, dy, 0.0f);
@@ -124,7 +136,11 @@ public class PenderCanvas {
         					   convexpoly.getIndexBuffer());
         GLES10.glDisableClientState (GLES10.GL_VERTEX_ARRAY);
     }
-    //==========================================================================     
+    //==========================================================================
+    /**
+     * 
+     * @param image
+     */
     public void glDrawImage( Image image ) {
     	GLES10.glBindTexture (GL10.GL_TEXTURE_2D, image.getGLId() );
     	GLES10.glEnableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
