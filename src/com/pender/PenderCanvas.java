@@ -25,7 +25,7 @@ import com.pender.glaid.Polygon;
 
 
 public class PenderCanvas {
-	
+	//========================================================================== 
 	public PenderCanvas( PenderRenderer renderer ) {
 		float vert[] = { 
 	  		      100.0f, 300f, 0.0f,
@@ -39,11 +39,21 @@ public class PenderCanvas {
 		mPoly = new Polygon( vert, ind );
 		mRenderer = renderer;
 	}
-
+	//==========================================================================
+	/**
+	 * 
+	 * @param img
+	 * @param dx
+	 * @param dy
+	 */
     public void drawImage( Image img, float dx, float dy) {
-    	this.glDrawImage(img);
+    	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
+    	GLES10.glPushMatrix ();
+    	GLES10.glTranslatef (dx, dy, 0.0f);
+    	this.glDrawImage (img);
+    	GLES10.glPopMatrix();
    } 
-
+   //========================================================================== 
     /**
      * 
      * @param image integer reference to the image
@@ -53,12 +63,32 @@ public class PenderCanvas {
      * @param dh image height
      */
     public void drawImage( Image img, float dx, float dy, float dw, float dh) {
-    	this.glDrawImage(img);
+    	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
+    	GLES10.glPushMatrix ();
+    	GLES10.glTranslatef (dx, dy, 0.0f);
+    	this.glDrawImage (img);
+    	GLES10.glPopMatrix ();
     }
-
+    //========================================================================== 
+    /**
+     * 
+     * @param image integer reference to the image
+     * @param sx
+     * @param sy
+     * @param sw
+     * @param sh
+     * @param dx x coordinate of top right corner 
+     * @param dy y coordinate of top right corner
+     * @param dw image width
+     * @param dh image height
+     */
     public void drawImage( Image  img, float sx, float sy, float sw, float sh, 
                                        float dx, float dy, float dw, float dh) {
+    	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
+    	GLES10.glPushMatrix ();
+    	GLES10.glTranslatef (dx, dy, 0.0f);
     	this.glDrawImage(img);
+    	GLES10.glPopMatrix ();
     }
     //==========================================================================
     //==========================================================================
