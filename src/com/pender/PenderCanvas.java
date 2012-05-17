@@ -94,6 +94,7 @@ public class PenderCanvas {
      * @param dw image width
      * @param dh image height
      */
+    
     public void drawImage (Image img, float sx, float sy, float sw, float sh, 
                                       float dx, float dy, float dw, float dh) {
 		float vert[] = { 
