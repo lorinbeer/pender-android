@@ -15,7 +15,6 @@
  *
  */
 
-
 package com.pender.glaid;
 
 import java.nio.ByteBuffer;

@@ -144,5 +144,6 @@ function init() {
 
 
 function draw() {
-    Canvas.drawImage (Pender.getImage(buildbotid), 0, 0);
+    Canvas.drawImage (Pender.getImage(buildbotid), 0, 0, 512, 512);
+
 }
