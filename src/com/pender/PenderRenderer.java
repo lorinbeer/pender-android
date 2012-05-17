@@ -50,9 +50,8 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         mSetfps = 60;
         
         mCanvas = new PenderCanvas(this);
-        mTextureMap = new HashMap<Integer,Image>();
         mLoadMap = new HashMap<Integer,Bitmap>();
-        mPenderJS = new PenderJS(handler,mJSContext,mJSScope);
+        mPenderJS = new PenderJS(handler);
 
         setupJS();
     }
@@ -71,7 +70,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     	long nowframe = new Date().getTime();
   
-    	if( (nowframe - mLastFrame) > 1.0/mSetfps ) {
+    	if( (nowframe - mLastFrame) > 1.0/mSetfps && mPenderJS.getState() ) {
     		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
     	    mLastFrame = nowframe;
     	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
@@ -178,7 +177,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
        	Polygon poly = new Polygon (vert, ind);
        	Image img = new Image (texid[0], poly);
-       	mTextureMap.put (id, img);
+       	mPenderJS.setImage(id, img);
     }
     //========================================================================== 
     public void requestLoad (int id, Bitmap bmp) {
@@ -208,8 +207,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     private long mLastFrame;
     private long mfps;
     private int mSetfps;
-    
-    private HashMap<Integer,Image> mTextureMap;
+
     private HashMap<Integer,Bitmap> mLoadMap;
 
     private PenderCanvas mCanvas;

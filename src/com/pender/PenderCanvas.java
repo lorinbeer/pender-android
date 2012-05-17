@@ -17,7 +17,6 @@
 
 package com.pender;
 
-import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES10;
 
@@ -39,7 +38,6 @@ public class PenderCanvas {
 
 		mPoly = new Polygon( vert, ind );
 		mRenderer = renderer;
-		mImageList = new ArrayList<Image>();
 	}
 
     public void drawImage( Image img, float dx, float dy) {
@@ -78,12 +76,7 @@ public class PenderCanvas {
     public void translate( float x, float y ) {
         //awesome
         GLES10.glTranslatef( x, y, 0.0f );
-    }
-    //==========================================================================
-    @SuppressWarnings("unchecked")
-	public void setImageList( ArrayList<Image> imagelist ) {
-    	mImageList = (ArrayList<Image>) imagelist.clone();
-    }   
+    } 
     //========================================================================== 
     /**
      * draw a mesh
@@ -114,7 +107,6 @@ public class PenderCanvas {
     }
     //==========================================================================
     //==========================================================================
-    private ArrayList<Image> mImageList;
     Polygon mPoly;
     PenderRenderer mRenderer;
     //==========================================================================
