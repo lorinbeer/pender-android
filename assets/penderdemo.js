@@ -45,23 +45,18 @@ function Animation(framemap, framenumb, cols, rows, framewidth, frameheight, bor
     this.initFrames( framenumb );
 
 
-    this.draw = function(ctx, dx, dy, dWidth, dHeight) {
+    this.draw = function(dx, dy, dWidth, dHeight) {
 	//absolute value of current frame index is used, allowing for negative frame counts
 	var curframe = this._currentframe<0? -1 * this._currentframe : this._currentframe;
 	var frametop = this._frames[curframe];
-	Pender.ctx.drawImage( this._framemap, frametop.x, frametop.y, this._framewidth, this._frameheight, dx, dy, this._framewidth, this._frameheight   );
+	Canvas.drawImage( Pender.getImage(this._framemap), frametop.x, frametop.y, this._framewidth, this._frameheight, dx, dy, this._framewidth, this._frameheight   );
 	this._frameupdate();
     }
 }
 
 
-
-
-
 function AnimatedSprite(anim) {
-
     this._animation = anim;
-
 
     this.init = function (framemap, framenumb, cols, rows, framewidth, frameheight) {
 	var i = 0;
@@ -90,61 +85,21 @@ function AnimatedSprite(anim) {
 }
 
 //==============================================================================
-
-function Cat() {
-
-    this.frame = 0;
-
-    //this.xspeed = 0.01 * Math.floor(Math.random()*5);
-    //this.yspeed = 0.01 * Math.floor(Math.random()*5);
-
-    this.xpos = 50;
-    this.ypos = 50;
-
-    //this.rotation = 0.0;
-
-    //this.scalefactor = 0.5;
-
-    this.drawme = function () {
-
-        if (this.frame > 10) { this.frame = 0; }
-
-    //    this.xpos += this.xspeed;
-    //    this.ypos += this.yspeed;
-    //    if (this.xpos < -1.0 || this.xpos > 1.0) {
-    //        this.xspeed *= -1;
-    //    }
-    //    if (this.ypos < -1.0 || this.ypos > 1.0) {
-    //        this.yspeed *= -1;
-    //    }
-
-        this.frame += 1;
-      //  Canvas.scale(0.5, 0.5);
-        Canvas.translate(10,10);
-        Canvas.translate(this.xpos, this.ypos);
-        Canvas.drawImage(this.frame, 0, 0);
-
-    };
-
-}
-
+var sprite = null;
 //==============================================================================
-
-//==============================================================================
-var buildbotid = null;
-//==============================================================================
-function init() {
-    console.log("loading images");
-    
+function init() {   
     buildbotid = Pender.loadImage( "client/assets/build_bot_map.png" );
-
-    console.log(i);
-    //console.log(Pender);
+    var anim = new Animation (buildbotid, 9, 4, 3, 254, 254, 1);
+    sprite  = new AnimatedSprite(anim); 
 }
 
 
 function draw() {
+/*
     Canvas.drawImage (Pender.getImage(buildbotid), 
 		      0, 0, 256, 256,
 		      0, 0, 512, 512);
+*/
+    //Canvas.clearRect(0,0,Pender.canvas.width,Pender.canvas.height);    
+    sprite._animation.draw( 10, 10, 255, 255 );
 }
