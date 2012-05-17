@@ -34,9 +34,6 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
-
-
-
 public class PenderActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
