@@ -80,10 +80,10 @@ function AnimatedSprite(anim) {
    this.draw = function(texid) {
 	self.xpos = self.xpos+ self.xvel;
 	self.ypos = self.ypos+ self.yvel;
-	if( self.xpos < 0 || self.xpos >= 400-self.width/*Pender.canvas.width*/) {
+	if( self.xpos < 0 || self.xpos >= 720-self.width/*Pender.canvas.width*/) {
 	    self.xvel = self.xvel * -1; 
 	}
-	if(self.ypos < 0 || self.ypos >= 400-self.height/*Pender.canvas.height */) { 
+	if(self.ypos < 0 || self.ypos >= 1084-self.height/*Pender.canvas.height */) { 
 	    self.yvel = self.yvel * -1; 
 	}
 	
