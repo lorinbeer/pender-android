@@ -165,6 +165,10 @@ public class PenderCanvas {
     	GLES10.glDisableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
     }
     //==========================================================================
+    public void clearRect(int dx,int dy,int dwidth,int dheight) {
+    	GLES10.glClear(GLES10.GL_COLOR_BUFFER_BIT);
+    
+    }
     //==========================================================================
     Polygon mPoly;
     PenderRenderer mRenderer;
