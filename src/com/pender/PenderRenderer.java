@@ -76,12 +76,12 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
     	    Log.d("fps",String.valueOf(mfps));
 
-    		GLES10.glClear( GLES10.GL_COLOR_BUFFER_BIT | 
+    		GLES10.glClear( GLES10.GL_COLOR_BUFFER_BIT |  
     						GLES10.GL_DEPTH_BUFFER_BIT );
-
+  
     		GLES10.glLoadIdentity();  
 
-    		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f ); 
+    		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f );
         	execScript ("draw();");
     	}
     }

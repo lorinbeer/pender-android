@@ -37,6 +37,8 @@ public class PenderJS {
 		mImageMap = new HashMap<Integer,Image>();
 		mPendingAssets = 0;
 		mReady = true;
+		mPeriod = 16.0f;
+		mLastDraw = 0.0f;
 	}
     //==========================================================================
 	/**
@@ -70,15 +72,6 @@ public class PenderJS {
 		return null;
 	}
     //==========================================================================
-	/**
-	 * query the current state of Pender
-	 * 	true is Ready
-	 * 	false is pending
-	 * @return the current state of Pender, true if Ready
-	 */
-	public boolean getState () {
-		return mReady;
-	}
 	//==========================================================================
 	/**
 	 * 
@@ -90,9 +83,31 @@ public class PenderJS {
         mImageMap.put (id,img);
 	}
 	//==========================================================================
+	
+	//==========================================================================
+	public void setInterval (float period) {
+		mPeriod = period;
+	}
+	public float getInterval () {
+		return mPeriod;
+	}
+	//==========================================================================
+	/**
+	 * query the current state of Pender
+	 * 	true is Ready
+	 * 	false is pending
+	 * @return the current state of Pender, true if Ready
+	 */
+	public boolean getState () {
+		return mReady;
+	}
+
+	//==========================================================================
 	private PenderMessageHandler mHandler;
 	private HashMap<Integer,Image> mImageMap;
 	private int mPendingAssets;
 	private boolean mReady;
+	private float mPeriod;
+	private float mLastDraw;
 	//==========================================================================
 }
