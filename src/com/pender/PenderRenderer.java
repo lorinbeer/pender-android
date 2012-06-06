@@ -26,6 +26,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -51,13 +52,13 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         
         mCanvas = new PenderCanvas(this);
         mLoadMap = new HashMap<Integer,Bitmap>();
-        mPenderJS = new PenderJS(handler);
+        mPenderJS = new PenderJS(handler,mCanvas);
 
         setupJS();
     }
     //==========================================================================
     @Override
-    public void onDrawFrame( GL10 gl ) {
+    public void onDrawFrame (GL10 gl) {
     	if (!mLoadMap.isEmpty()) {
     		Iterator<Integer> it = mLoadMap.keySet().iterator();
     		
@@ -70,7 +71,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     	long nowframe = new Date().getTime();
   
-    	if( (nowframe - mLastFrame) > 1.0/mSetfps && mPenderJS.getState() ) {
+    	if( (nowframe - mLastFrame) > 1.0/mSetfps && mPenderJS.ready() ) {
     		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
     	    mLastFrame = nowframe;
     	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
@@ -82,14 +83,16 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		GLES10.glLoadIdentity();  
 
     		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f );
-        	execScript ("draw();");
+    		if(mPenderJS.ready()) {
+    			execScript(mPenderJS.getDrawFunc());
+    		}
     	}
     }
     //==========================================================================
     @Override
     public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
     	//opengl setup
-    	GLES10.glClearColor (1.0f, 0.0f, 0.0f, 0.5f);
+    	GLES10.glClearColor (0.0f, 0.0f, 0.0f, 0.5f);
     	GLES10.glShadeModel (GLES10.GL_SMOOTH);
     	GLES10.glClearDepthf (1.0f);
     	GLES10.glEnable (GLES10.GL_DEPTH_TEST);
@@ -176,7 +179,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
        	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
        	Polygon poly = new Polygon (vert, ind);
-       	Image img = new Image (texid[0], poly,1024,1024);
+       	Image img = new Image (texid[0], poly,bmp.getHeight(),bmp.getWidth());
        	mPenderJS.setImage(id, img);
     }
     //========================================================================== 
@@ -184,6 +187,19 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	mLoadMap.put(id, bmp);
     }
     //========================================================================== 
+    public void execScript (Function script) {
+    	mJSContext = Context.enter();
+    	mJSContext.setOptimizationLevel(-1);
+    	Function draw = mPenderJS.getDrawFunc();
+    	try {
+    		
+    		draw.call(mJSContext, mJSScope, mJSScope, new Object[0]);
+    		
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	Context.exit();
+    }
     //==========================================================================   
     public void execScript (String script) {
         mJSContext = Context.enter();
@@ -197,7 +213,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         						       null);
         } catch(Exception e) {
         	e.printStackTrace();
-        }
+        }  
         Context.exit();
     }
     //==========================================================================

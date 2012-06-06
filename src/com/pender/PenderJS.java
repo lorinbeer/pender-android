@@ -22,18 +22,34 @@ import java.util.UUID;
 
 import android.os.Message;
 
+import org.mozilla.javascript.Function;
+
 import com.pender.PenderMessageHandler;
 import com.pender.glaid.Image;
 
-
+/**
+ * PenderJS
+ *   js utility class, provides the 'Pender' object expected by demo apps
+ */
 public class PenderJS {
-    //==========================================================================    
+	//==========================================================================
+	// Public members, to be accessed in a js like way
+	//==========================================================================
+	public PenderCanvas canvas;
+	public int width;
+	public int height;
+	//==========================================================================
+	//==========================================================================    
 	/**
 	 * 
 	 * @param handler
 	 */
-	public PenderJS (PenderMessageHandler handler) {
+	public PenderJS (PenderMessageHandler handler,
+					 PenderCanvas pendercanvas) {
 		mHandler = handler;
+		canvas = pendercanvas;
+		width = 720;//magic number
+		height = 1084;//magic number
 		mImageMap = new HashMap<Integer,Image>();
 		mPendingAssets = 0;
 		mReady = true;
@@ -83,14 +99,15 @@ public class PenderJS {
         mImageMap.put (id,img);
 	}
 	//==========================================================================
-	
 	//==========================================================================
-	public void setInterval (float period) {
+	public void setInterval (Function draw, float period) {
+		mDraw = draw;
 		mPeriod = period;
 	}
 	public float getInterval () {
 		return mPeriod;
 	}
+	//==========================================================================
 	//==========================================================================
 	/**
 	 * query the current state of Pender
@@ -98,11 +115,14 @@ public class PenderJS {
 	 * 	false is pending
 	 * @return the current state of Pender, true if Ready
 	 */
-	public boolean getState () {
+	public boolean ready () {
 		return mReady;
 	}
-
+	
+	public Function getDrawFunc() { return mDraw; }
 	//==========================================================================
+	//==========================================================================
+	private Function mDraw;
 	private PenderMessageHandler mHandler;
 	private HashMap<Integer,Image> mImageMap;
 	private int mPendingAssets;
