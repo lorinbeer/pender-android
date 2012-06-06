@@ -17,43 +17,39 @@
 
 package com.pender;
 
-import android.content.Context;
+import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
+import com.pender.PenderMessageHandler;
 
+public class PenderView extends GLSurfaceView {
 
-class PenderView extends GLSurfaceView {
-
-     public PenderView( Context ctx ) {
-
-         super( ctx );
-
-         mRenderer = new PenderRenderer();
-
+     public PenderView( PenderMessageHandler handler ) {
+         super( handler.getActivity() );
+         mRenderer = new PenderRenderer(handler);
          this.setRenderer( mRenderer );
-
      }
 
-
-     public void execScript( String script ) {
-    
-         ((PenderRenderer) mRenderer).execScript(script);
-
+     public void execScripts( ArrayList<String> scripts ) {
+    	 final ArrayList<String> fscripts = scripts;
+    	 this.queueEvent( new Runnable() {
+    		 public void run() {
+    			 for( int i = 0; i < fscripts.size(); i++) {
+    				 ((PenderRenderer)mRenderer).execScript(fscripts.get(i));
+    			 }
+    		 }
+    	 });
      }
      
-     public void loadTexture( final Bitmap bmp ) {
-
+     public void loadTexture( final Bitmap bmp, final int id ) {
          this.queueEvent( new Runnable() {
-             public void run() { 	
-
-             		((PenderRenderer) mRenderer).addToPreload( bmp );
-             	
+             public void run() {
+            	 ((PenderRenderer) mRenderer).requestLoad(id,bmp);
              }
          });
-    	 
      }
 
     GLSurfaceView.Renderer mRenderer;
 
-}
- 
+} 

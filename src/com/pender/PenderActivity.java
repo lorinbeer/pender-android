@@ -18,9 +18,11 @@
 package com.pender;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 
 import android.app.Activity;
@@ -37,34 +39,38 @@ public class PenderActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        mGLView = new PenderView( this );
+
+        mHandler = new PenderMessageHandler(this);
+
+        mGLView = new PenderView( mHandler );
 
         initView();
         
-        ((PenderView) mGLView).execScript( readJS() );
-        //if init was not declared in penderdemo.js, the world explodes
-        ((PenderView) mGLView).execScript( "init();" );
+        ArrayList<String> scripts = new ArrayList<String>();
 
-      
-        loadImage();
+        scripts.add(readJS("penderandroidshim.js") );
+        scripts.add(readJS("penderdemo.js") );
+        scripts.add("init();");
+        
+        ((PenderView)mGLView).execScripts(scripts);
 
- 
     }
-    
-    private String readJS() {		
-    	
+
+    public PenderView getView() { return (PenderView)this.mGLView; }
+
+    private String readJS( String jspath) {		
+
     	 BufferedReader reader = null;
-    	
+
     	 StringBuffer script = new StringBuffer();
-    	 
+
     	try {
 
 	  	    AssetManager al = this.getAssets(); //sharpshooting hulk
 
 	  	    reader = new BufferedReader( 
 	  	    					new InputStreamReader( 
-	  	    						al.open("penderdemo.js") ) ); //TODO: hardcoded magicks, needs to be spec'ed by argument
+	  	    						al.open(jspath) ) ); //TODO: hardcoded magicks, needs to be spec'ed by argument
 	  	    String buf = "";
 	  	    while( ( buf = reader.readLine() ) != null ) {
 	  	    	
@@ -130,9 +136,12 @@ public class PenderActivity extends Activity {
 	
 	        final Bitmap temp = BitmapFactory.decodeStream(instream);
 	        
-	        ((PenderView) mGLView).loadTexture( temp );
+	        ((PenderView) mGLView).loadTexture( temp, 0 );
         }
     }
+
     private GLSurfaceView mGLView;
 
+    private PenderMessageHandler mHandler;
+    
 }

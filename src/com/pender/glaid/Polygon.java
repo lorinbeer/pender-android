@@ -15,7 +15,6 @@
  *
  */
 
-
 package com.pender.glaid;
 
 import java.nio.ByteBuffer;
@@ -42,29 +41,24 @@ public class Polygon {
         mIndices = new short[indices.length];
         mIndices = indices.clone();
 
-        //boilerplate setup of the vertex buffer
-	ByteBuffer vbuf = ByteBuffer.allocateDirect( vertices.length * 4 );
-	vbuf.order( ByteOrder.nativeOrder() );
-        mVertexBuffer = vbuf.asFloatBuffer();
-	mVertexBuffer.put( mVertices );
-	mVertexBuffer.position( 0 );
-        
-	//boilerplate setup of the index buffer
-	ByteBuffer ibuf = ByteBuffer.allocateDirect( indices.length * 2 );
-	ibuf.order( ByteOrder.nativeOrder() );
-	mIndexBuffer = ibuf.asShortBuffer();
-    mIndexBuffer.put( mIndices );
-	mIndexBuffer.position(0);
-
+	        //boilerplate setup of the vertex buffer
+		ByteBuffer vbuf = ByteBuffer.allocateDirect( vertices.length * 4 );
+		vbuf.order( ByteOrder.nativeOrder() );
+	        mVertexBuffer = vbuf.asFloatBuffer();
+		mVertexBuffer.put( mVertices );
+		mVertexBuffer.position( 0 );
+	        
+		//boilerplate setup of the index buffer
+		ByteBuffer ibuf = ByteBuffer.allocateDirect( indices.length * 2 );
+		ibuf.order( ByteOrder.nativeOrder() );
+		mIndexBuffer = ibuf.asShortBuffer();
+	    mIndexBuffer.put( mIndices );
+		mIndexBuffer.position(0);
     }
    
-    
     public FloatBuffer getVertexBuffer() { return mVertexBuffer; }
     public ShortBuffer getIndexBuffer() { return mIndexBuffer; }
     public short[] getIndices() { return mIndices; }
-    
-    
-    
     
     //==========================================================================
     
@@ -75,6 +69,5 @@ public class Polygon {
     private FloatBuffer mVertexBuffer; //what we feed opengl
 
     private ShortBuffer mIndexBuffer; //what we feed opengl
-
 
 }
