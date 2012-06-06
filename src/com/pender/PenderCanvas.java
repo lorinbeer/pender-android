@@ -97,6 +97,9 @@ public class PenderCanvas {
     
     public void drawImage (Image img, float sx, float sy, float sw, float sh, 
                                       float dx, float dy, float dw, float dh) {
+    	if (img==null) {
+    		throw new NullPointerException("Image cannot be null");
+    	}
 		float vert[] = { 
 	  		      dw, 0.0f, 0.0f,
 	  		      dw,   dh, 0.0f,
@@ -158,7 +161,7 @@ public class PenderCanvas {
     	GLES10.glBindTexture (GL10.GL_TEXTURE_2D, image.getGLId() );
     	GLES10.glEnableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
     	GLES10.glTexCoordPointer (2,
-    							  GL10.GL_FLOAT, 
+    							  GL10.GL_FLOAT,
     							  0,
     							  image.getTextureBuffer() );
     	drawPolygon( image.getPoly() );
@@ -167,7 +170,6 @@ public class PenderCanvas {
     //==========================================================================
     public void clearRect(int dx,int dy,int dwidth,int dheight) {
     	GLES10.glClear(GLES10.GL_COLOR_BUFFER_BIT);
-    
     }
     //==========================================================================
     Polygon mPoly;

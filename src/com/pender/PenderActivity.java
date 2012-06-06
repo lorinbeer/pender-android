@@ -47,11 +47,17 @@ public class PenderActivity extends Activity {
         initView();
         
         ArrayList<String> scripts = new ArrayList<String>();
-
+        
+        // specify location of the shim relative to Assets directory
         scripts.add(readJS("penderandroidshim.js") );
-        scripts.add(readJS("penderdemo.js") );
+        
+        // specify location of js implementation of client app
+        scripts.add(readJS("demos/client/penderdemo.js") );
+        
+        // pin an init call to the end, calls default init(), unless redefined
         scripts.add("init();");
         
+        // execute the scripts in order specified
         ((PenderView)mGLView).execScripts(scripts);
 
     }
@@ -109,36 +115,6 @@ public class PenderActivity extends Activity {
     	}); // end runnable
     } //initView
 
-    
-    private void loadImage() {
-    	
-        InputStream instream = null;
-        
-        //cripcrap crippity path generation
-        String basepath = "tex/pattysdaynyan/00";
-        String path = "";
-        for( int i = 0; i < 12; i++ ) {
-        	
-        	path = basepath;
-        	
-        	if( i < 10 ) {
-        		path += "0";
-        	}
-        	
-        	path += i + ".png";
-        	
-	        try {
-				instream = this.getAssets().open( path );
-			} catch (IOException e) {
-			
-				e.printStackTrace();
-			}
-	
-	        final Bitmap temp = BitmapFactory.decodeStream(instream);
-	        
-	        ((PenderView) mGLView).loadTexture( temp, 0 );
-        }
-    }
 
     private GLSurfaceView mGLView;
 
