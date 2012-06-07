@@ -1,12 +1,15 @@
 # Pender Android v0.1a
 
 2D Hardware accelerated Canvas context for mobile
-this is the iOS version
+this is the Android version
+
+##Status
+
 
 ##Embedded Javascript Engine
 
 Pender uses an embedded Javascript engine. This allows for fast dynamic parsing of javascript targeting the Pender Canvas. 
-On Android, Rhino is used. A static library is provided along with the project.
+On Android and Blackberry, Rhino is used. A static library is provided along with the project.
 
 the rest of the Pender project:
 
