@@ -20,15 +20,12 @@ package com.pender;
 import java.io.BufferedReader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 
 import android.app.Activity;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
@@ -76,7 +73,7 @@ public class PenderActivity extends Activity {
 
 	  	    reader = new BufferedReader( 
 	  	    					new InputStreamReader( 
-	  	    						al.open(jspath) ) ); //TODO: hardcoded magicks, needs to be spec'ed by argument
+	  	    						al.open(jspath) ) );
 	  	    String buf = "";
 	  	    while( ( buf = reader.readLine() ) != null ) {
 	  	    	

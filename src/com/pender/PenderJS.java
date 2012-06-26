@@ -104,6 +104,9 @@ public class PenderJS {
 		mDraw = draw;
 		mPeriod = period;
 	}
+	public void setTimeout (Function func, float duraton) {
+		
+	}
 	public float getInterval () {
 		return mPeriod;
 	}
