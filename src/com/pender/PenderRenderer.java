@@ -18,6 +18,7 @@
 package com.pender;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.Iterator;
@@ -75,7 +76,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
     	    mLastFrame = nowframe;
     	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
-    	    Log.d("fps",String.valueOf(mfps));
+    	//    Log.d("fps",String.valueOf(mfps));
 
     		GLES10.glClear( GLES10.GL_COLOR_BUFFER_BIT |  
     						GLES10.GL_DEPTH_BUFFER_BIT );
@@ -84,7 +85,13 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f );
     		if(mPenderJS.ready()) {
-    			execScript(mPenderJS.getDrawFunc());
+    			ArrayList<FuncDelayPair> delayed = mPenderJS.getDelayed();
+    			for (int i = 0; i < delayed.size(); i++) {
+    				FuncDelayPair funky = delayed.get(i);
+    				if (funky.ready(nowframe)) {
+    					execScript(funky.func); // have a funky time! 		    					
+    				}
+    			}
     		}
     	}
     }
@@ -190,13 +197,10 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     public void execScript (Function script) {
     	mJSContext = Context.enter();
     	mJSContext.setOptimizationLevel(-1);
-    	Function draw = mPenderJS.getDrawFunc();
     	try {
-    		
-    		draw.call(mJSContext, mJSScope, mJSScope, new Object[0]);
-    		
+    		script.call(mJSContext, mJSScope, mJSScope, new Object[0]);
     	} catch(Exception e) {
-    		e.printStackTrace();
+    		e.printStackTrace(); 
     	}
     	Context.exit();
     }
@@ -228,7 +232,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     private PenderCanvas mCanvas;
     private PenderJS mPenderJS;
-    
 	
 	Context mJSContext;
 	Scriptable mJSScope;
