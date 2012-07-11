@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import android.os.Message;
-import android.text.format.Time;
 import org.mozilla.javascript.Function;
 import com.pender.PenderMessageHandler;
 import com.pender.glaid.Image;
@@ -174,8 +173,5 @@ public class PenderJS {
 
 	// ready flag, off when waiting on asynchronous processes
 	private boolean mReady;
-
-	// used for fps calculation
-	private float mTimeLastDraw;
 	//==========================================================================
 }
