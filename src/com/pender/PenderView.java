@@ -21,18 +21,18 @@ import java.util.ArrayList;
 
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
-import com.pender.PenderMessageHandler;
+import com.pender.PenderHub;
 
 public class PenderView extends GLSurfaceView {
 
-     public PenderView( PenderMessageHandler handler ) {
+     public PenderView( PenderHub handler ) {
          super( handler.getActivity() );
          mRenderer = new PenderRenderer(handler);
          this.setRenderer( mRenderer );
      }
 
-     public void execScripts( ArrayList<String> scripts ) {
-    	 final ArrayList<String> fscripts = scripts;
+     public void execScripts( Object obj ) {
+    	 final ArrayList<String> fscripts = (ArrayList<String>) obj;
     	 this.queueEvent( new Runnable() {
     		 public void run() {
     			 for( int i = 0; i < fscripts.size(); i++) {
@@ -49,6 +49,7 @@ public class PenderView extends GLSurfaceView {
              }
          });
      }
+     
 
     GLSurfaceView.Renderer mRenderer;
 

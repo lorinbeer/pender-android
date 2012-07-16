@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import android.os.Message;
 import org.mozilla.javascript.Function;
-import com.pender.PenderMessageHandler;
+import com.pender.PenderHub;
 import com.pender.glaid.Image;
 
 /**
@@ -45,7 +45,7 @@ public class PenderJS {
 	 * 
 	 * @param handler
 	 */
-	public PenderJS (PenderMessageHandler handler,
+	public PenderJS (PenderHub handler,
 					 PenderCanvas pendercanvas) {
 		mHandler = handler;
 		canvas = pendercanvas;
@@ -163,7 +163,7 @@ public class PenderJS {
 	private ArrayList<FuncDelayPair> mDelayed;
 	
 	// custom message handler
-	private PenderMessageHandler mHandler;
+	private PenderHub mHandler;
 	
 	// blarg
 	private HashMap<Integer,Image> mImageMap;

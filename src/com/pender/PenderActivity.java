@@ -34,29 +34,14 @@ public class PenderActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHandler = new PenderMessageHandler(this);
+        mHandler = new PenderHub(this);
 
         mGLView = new PenderView(mHandler);
         initView();
-        /*
-        ArrayList<String> scripts = new ArrayList<String>();
-        // specify location of the shim relative to Assets directory
-        scripts.add(readJS("penderandroidshim.js"));
-        // specify location of js implementation of client app
-        scripts.add(readJS("demos/client/penderdemo.js") );
-        // pin an init call to the end, calls default init(), unless redefined
-        scripts.add("init();");
-        // execute the scripts in order specified
-        ((PenderView)mGLView).execScripts(scripts);
-        */
-        ArrayList<String> scripts = new ArrayList<String>();
-        scripts.add(readJS("penderandroidshim.js"));
-      /*scripts.add(readJS("www/sunspider/sunspider-test-contents.js"));
-        scripts.add(readJS("www/sunspider/sunspider-test-prefix.js"));
-        scripts.add(readJS("www/sunspider/sunspider.js"));
-        scripts.add("start();");*/
 
-        scripts.add(readJS("demos/client/penderdemo.js"));
+        ArrayList<String> scripts = new ArrayList<String>();
+        scripts.add(readFileAsString("penderandroidshim.js"));
+        scripts.add(readFileAsString("demos/client/penderdemo.js"));
         scripts.add("init();");
         
         ((PenderView)mGLView).execScripts(scripts);
@@ -64,7 +49,12 @@ public class PenderActivity extends Activity {
 
     public PenderView getView() { return (PenderView)this.mGLView; }
 
-    private String readJS( String jspath) {		
+    /**
+     * 
+     * @param jspath the path to attempt to read
+     * @return
+     */
+    private String readFileAsString( String path) {		
     	BufferedReader reader = null;
     	StringBuffer script = new StringBuffer();
     	try {
@@ -72,7 +62,7 @@ public class PenderActivity extends Activity {
 
 	  	    reader = new BufferedReader( 
 	  	    					new InputStreamReader( 
-	  	    						al.open(jspath)));
+	  	    						al.open(path)));
 	  	    String buf = "";
 	  	    while(( buf = reader.readLine()) != null) {
 	  	    	script.append("\n");
@@ -80,7 +70,7 @@ public class PenderActivity extends Activity {
 	  	    }
   	    } catch (IOException e ) {
   	    	Log.d("exception", e.toString() );
-  	    	Log.d("handle this gracefully","wouldn't you?");
+  	    	Log.d("PENDER","STRING PATH: "+path+" DOES NOT COMPUTE. Please ensure that the file exists in a subdirectory of assets eg \"demos/client/penderdemo.js\"");
   	    }
     	return script.toString();
     }
@@ -99,5 +89,5 @@ public class PenderActivity extends Activity {
     } //initView
 
     private GLSurfaceView mGLView;
-    private PenderMessageHandler mHandler;
+    private PenderHub mHandler;
 }
