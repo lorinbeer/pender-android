@@ -13,7 +13,7 @@ On Android and Blackberry, Rhino is used. A static library is provided along wit
 
 the rest of the Pender project:
 
-* [Penader Android](https://github.com/doggerelverse/Pender-android)
+* [Pender Android](https://github.com/doggerelverse/Pender-android)
 
 * [Pender iOS](https://github.com/doggerelverse/Pender-ios)
 
