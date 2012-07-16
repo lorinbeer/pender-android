@@ -157,8 +157,8 @@ public class PenderCanvas {
      * 
      * @param image
      */
-    public void glDrawImage( Image image ) {
-    	GLES10.glBindTexture (GL10.GL_TEXTURE_2D, image.getGLId() );
+    public void glDrawImage( Image image ) {  
+     	GLES10.glBindTexture (GL10.GL_TEXTURE_2D, image.getGLId() );
     	GLES10.glEnableClientState (GL10.GL_TEXTURE_COORD_ARRAY);
     	GLES10.glTexCoordPointer (2,
     							  GL10.GL_FLOAT,

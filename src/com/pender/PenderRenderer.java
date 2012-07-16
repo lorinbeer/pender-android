@@ -1,5 +1,4 @@
 /**
- * Copyright 2012 Adobe Systems Incorporated
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +43,7 @@ import com.pender.glaid.Polygon;
 
 public class PenderRenderer implements GLSurfaceView.Renderer {
     //==========================================================================
-    public PenderRenderer(PenderMessageHandler handler) {
+    public PenderRenderer(PenderHub handler) {
         super();
         //framerate
         mLastFrame = 0;
@@ -72,27 +71,18 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 
     	long nowframe = new Date().getTime();
   
-    	if( (nowframe - mLastFrame) > 1.0/mSetfps && mPenderJS.ready() ) {
+    	if (mPenderJS.ready() ) {
     		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
-    	    mLastFrame = nowframe;
-    	    mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
-    	//    Log.d("fps",String.valueOf(mfps));
-
-    		GLES10.glClear( GLES10.GL_COLOR_BUFFER_BIT |  
-    						GLES10.GL_DEPTH_BUFFER_BIT );
-  
-    		GLES10.glLoadIdentity();  
-
-    		//GLES10.glTranslatef( 0.0f, 0.0f, -10.0f );
-    		if(mPenderJS.ready()) {
-    			ArrayList<FuncDelayPair> delayed = mPenderJS.getDelayed();
-    			for (int i = 0; i < delayed.size(); i++) {
-    				FuncDelayPair funky = delayed.get(i);
-    				if (funky.ready(nowframe)) {
-    					execScript(funky.func); // have a funky time! 		    					
-    				}
-    			}
-    		}
+    		mLastFrame = nowframe;
+    		mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
+    		Log.d("FPS",Long.toString(mfps));
+    		ArrayList<FuncDelayPair> delayed = mPenderJS.getDelayed();
+    		for (int i = 0; i < delayed.size(); i++) {
+    			FuncDelayPair funky = delayed.get(i);
+    			if (funky.ready(nowframe)) {
+    				execScript(funky.func); // have a funky time! 		    					
+   				}
+   			}
     	}
     }
     //==========================================================================
