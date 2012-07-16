@@ -17,13 +17,11 @@
 
 package com.pender;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-
 import android.os.Message;
-
 import org.mozilla.javascript.Function;
-
 import com.pender.PenderMessageHandler;
 import com.pender.glaid.Image;
 
@@ -35,11 +33,14 @@ public class PenderJS {
 	//==========================================================================
 	// Public members, to be accessed in a js like way
 	//==========================================================================
+
 	public PenderCanvas canvas;
 	public int width;
 	public int height;
+
 	//==========================================================================
 	//==========================================================================    
+
 	/**
 	 * 
 	 * @param handler
@@ -50,13 +51,15 @@ public class PenderJS {
 		canvas = pendercanvas;
 		width = 720;//magic number
 		height = 1084;//magic number
+		mDelayed = new ArrayList<FuncDelayPair>();
 		mImageMap = new HashMap<Integer,Image>();
 		mPendingAssets = 0;
 		mReady = true;
-		mPeriod = 16.0f;
-		mLastDraw = 0.0f;
 	}
+	
+	//==========================================================================
     //==========================================================================
+	
 	/**
 	 * 
 	 * @param path
@@ -75,7 +78,10 @@ public class PenderJS {
 		mPendingAssets++;
 	    return id;
 	}
+
 	//==========================================================================
+	//==========================================================================
+
 	/**
 	 * attemtp to retrieve an image with the given id
 	 * @param id of the image to retrieve
@@ -87,8 +93,10 @@ public class PenderJS {
 		}
 		return null;
 	}
+
     //==========================================================================
 	//==========================================================================
+
 	/**
 	 * 
 	 */
@@ -98,17 +106,36 @@ public class PenderJS {
 		}
         mImageMap.put (id,img);
 	}
+
 	//==========================================================================
 	//==========================================================================
-	public void setInterval (Function draw, float period) {
-		mDraw = draw;
-		mPeriod = period;
+
+	/**
+	 * 
+	 * @param func
+	 * @param period
+	 */
+	public void setInterval (Function func, float period) {
+		FuncDelayPair delayed = new FuncDelayPair(func, period, true);
+		mDelayed.add(delayed);
 	}
-	public float getInterval () {
-		return mPeriod;
+
+	//==========================================================================
+	//==========================================================================
+
+	/**
+	 * 
+	 * @param func
+	 * @param period
+	 */
+	public void setTimeout (Function func, float period) {
+		FuncDelayPair delayed = new FuncDelayPair(func, period, false);
+		mDelayed.add(delayed);
 	}
+
 	//==========================================================================
 	//==========================================================================
+
 	/**
 	 * query the current state of Pender
 	 * 	true is Ready
@@ -118,16 +145,33 @@ public class PenderJS {
 	public boolean ready () {
 		return mReady;
 	}
+
+	//==========================================================================
+	//==========================================================================
+	/*
+	 * replace with circular array
+	 */
+	public ArrayList<FuncDelayPair> getDelayed() {
+		return mDelayed;
+	}
+
+	//==========================================================================
+	// Private Members
+	//==========================================================================
+
+	// list of functions to execute after a specified period/delay
+	private ArrayList<FuncDelayPair> mDelayed;
 	
-	public Function getDrawFunc() { return mDraw; }
-	//==========================================================================
-	//==========================================================================
-	private Function mDraw;
+	// custom message handler
 	private PenderMessageHandler mHandler;
+	
+	// blarg
 	private HashMap<Integer,Image> mImageMap;
+
+	// number of assets 
 	private int mPendingAssets;
+
+	// ready flag, off when waiting on asynchronous processes
 	private boolean mReady;
-	private float mPeriod;
-	private float mLastDraw;
 	//==========================================================================
 }
