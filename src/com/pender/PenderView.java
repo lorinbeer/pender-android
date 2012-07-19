@@ -29,21 +29,26 @@ public class PenderView extends GLSurfaceView {
          super( handler.getActivity() );
          mRenderer = new PenderRenderer(handler);
          this.setRenderer( mRenderer );
+         this.queueEvent(new Runnable() {
+             public void run() {
+                ((PenderRenderer) mRenderer).setupJS();
+             }
+         });
      }
 
      public void execScripts( Object obj ) {
     	 final ArrayList<String> fscripts = (ArrayList<String>) obj;
-    	 this.queueEvent( new Runnable() {
+    	 this.queueEvent(new Runnable() {
     		 public void run() {
-    			 for( int i = 0; i < fscripts.size(); i++) {
+    			 for (int i = 0; i < fscripts.size(); i++) {
     				 ((PenderRenderer)mRenderer).execScript(fscripts.get(i));
     			 }
     		 }
     	 });
      }
-     
+
      public void loadTexture( final Bitmap bmp, final int id ) {
-         this.queueEvent( new Runnable() {
+         this.queueEvent(new Runnable() {
              public void run() {
             	 ((PenderRenderer) mRenderer).requestLoad(id,bmp);
              }
