@@ -54,14 +54,14 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         mLoadMap = new HashMap<Integer,Bitmap>();
         mPenderJS = new PenderJS(handler,mCanvas);
 
-        setupJS();
+//        setupJS();
     }
     //==========================================================================
     @Override
     public void onDrawFrame (GL10 gl) {
     	if (!mLoadMap.isEmpty()) {
     		Iterator<Integer> it = mLoadMap.keySet().iterator();
-    		
+
     		while(it.hasNext()) {
     			int key = (Integer)it.next();
     			this.loadTexture (key, mLoadMap.get(key));
@@ -196,7 +196,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     }
     //==========================================================================   
     public void execScript (String script) {
-        mJSContext = Context.enter();
+    	mJSContext = Context.enter();
         mJSContext.setOptimizationLevel(-1);
         //if there is a syntax error in the script, the world explodes
         try {
