@@ -80,10 +80,12 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		for (int i = 0; i < delayed.size(); i++) {
     			FuncDelayPair funky = delayed.get(i);
     			if (funky.ready(nowframe)) {
-    				execScript(funky.func); // have a funky time! 		    					
+    				//this.eexecScript(funky.func); // have a funky time!
+    				this.execScript("draw();");
    				}
    			}
     	}
+    	this.execScript("bots.draw();");
     }
     //==========================================================================
     @Override
@@ -193,6 +195,8 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		e.printStackTrace(); 
     	}
     	Context.exit();
+
+    	this.execScript("console.log(\"FUCK YOUF FUCKING FUCKERS\");");
     }
     //==========================================================================   
     public void execScript (String script) {

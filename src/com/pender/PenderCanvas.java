@@ -17,6 +17,9 @@
 
 package com.pender;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES10;
 
@@ -35,7 +38,7 @@ public class PenderCanvas {
 	  	};
 
 	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
-
+	  	coords = new HashMap<float[],float[]>();
 		mPoly = new Polygon( vert, ind );
 		mRenderer = renderer;
 	}
@@ -97,15 +100,17 @@ public class PenderCanvas {
     
     public void drawImage (Image img, float sx, float sy, float sw, float sh, 
                                       float dx, float dy, float dw, float dh) {
+    	float k[] = {dw,dh};
+    	float vert[] = null;
     	if (img==null) {
     		throw new NullPointerException("Image cannot be null");
     	}
-		float vert[] = { 
-	  		      dw, 0.0f, 0.0f,
-	  		      dw,   dh, 0.0f,
-	  		      0.0f, dh, 0.0f,
-	  		      0.0f, 0.0f, 0.0f,
-	  	};
+    	
+    	if (coords.containsKey(k)) {
+    		vert = coords.get(k);
+    	} else {
+    		vert = this.createVertArray(dw, dh);
+    	}
 	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
 	  	
 	  	Polygon poly = new Polygon (vert,ind);
@@ -172,7 +177,17 @@ public class PenderCanvas {
     	GLES10.glClear(GLES10.GL_COLOR_BUFFER_BIT);
     }
     //==========================================================================
+    private float[] createVertArray(float width, float height) {
+    	float vert[] = {width, 0.0f, 0.0f,
+    					width, height, 0.0f,
+    					0.0f, height, 0.0f,
+    					0.0f, 0.0f, 0.0f,
+		};
+		return vert;
+    }
+    //==========================================================================
     Polygon mPoly;
     PenderRenderer mRenderer;
+    HashMap<float[],float[]> coords;
     //==========================================================================
 }
