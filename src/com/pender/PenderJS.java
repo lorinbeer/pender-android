@@ -21,7 +21,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import android.os.Message;
-import org.mozilla.javascript.Function;
+import android.util.Log;
+
+
+//import org.mozilla.javascript.
+//import org.mozilla.javascript.Function;
+//import org.mozilla.javascript.FunctionObject;
+import org.mozilla.javascript.*;
 import com.pender.PenderHub;
 import com.pender.glaid.Image;
 
@@ -115,9 +121,10 @@ public class PenderJS {
 	 * @param func
 	 * @param period
 	 */
-	public void setInterval (Function func, float period) {
-		FuncDelayPair delayed = new FuncDelayPair(func, period, true);
-		mDelayed.add(delayed);
+	public void setInterval (ScriptableObject func, float period) {
+		Log.d("brass","balls");
+//		FuncDelayPair delayed = new FuncDelayPair(func, period, true);
+		//mDelayed.add(delayed);
 	}
 
 	//==========================================================================
@@ -128,9 +135,9 @@ public class PenderJS {
 	 * @param func
 	 * @param period
 	 */
-	public void setTimeout (Function func, float period) {
-		FuncDelayPair delayed = new FuncDelayPair(func, period, false);
-		mDelayed.add(delayed);
+	public void setTimeout (ScriptableObject func, float period) {
+		//FuncDelayPair delayed = new FuncDelayPair(func, period, false);
+	//	mDelayed.add(delayed);
 	}
 
 	//==========================================================================
