@@ -44,7 +44,7 @@ public class Polygon {
 	        //boilerplate setup of the vertex buffer
 		ByteBuffer vbuf = ByteBuffer.allocateDirect( vertices.length * 4 );
 		vbuf.order( ByteOrder.nativeOrder() );
-	        mVertexBuffer = vbuf.asFloatBuffer();
+        mVertexBuffer = vbuf.asFloatBuffer();
 		mVertexBuffer.put( mVertices );
 		mVertexBuffer.position( 0 );
 	        
@@ -55,19 +55,23 @@ public class Polygon {
 	    mIndexBuffer.put( mIndices );
 		mIndexBuffer.position(0);
     }
-   
+    //==========================================================================
+    // accessor methods
+    //==========================================================================   
     public FloatBuffer getVertexBuffer() { return mVertexBuffer; }
     public ShortBuffer getIndexBuffer() { return mIndexBuffer; }
     public short[] getIndices() { return mIndices; }
-    
     //==========================================================================
-    
-    private float[] mVertices; //vertex data defining the convex (your job) polygon
-    
-    private short[] mIndices; //defines the order of vertices that we want our polygon connected 
-
-    private FloatBuffer mVertexBuffer; //what we feed opengl
-
-    private ShortBuffer mIndexBuffer; //what we feed opengl
-
+    // private members
+    //==========================================================================
+    // vertex data defining the convex (your job) polygon
+    private float[] mVertices;
+    // defines the order of vertices that we want our polygon connected
+    private short[] mIndices;
+    // what we feed opengl
+    private FloatBuffer mVertexBuffer;
+    // what we feed opengl
+    private ShortBuffer mIndexBuffer;
+    //==========================================================================
+    //==========================================================================
 }

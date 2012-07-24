@@ -68,7 +68,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     			it.remove ();
     		}
     	}
-
+    	// main render loop, execute each function in delayed list
     	if (mPenderJS.ready() ) {
     		delayed = mPenderJS.getDelayed();
     		nowframe = updatefps();
@@ -108,7 +108,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     //==========================================================================
     @Override
     public void onSurfaceChanged( GL10 gl, int width, int height ) {
-
     	// Sets the current view port to the new size.
     	GLES10.glViewport(0, 0, width, height);
 		// Select the projection matrix
@@ -116,22 +115,16 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 		// Reset the projection matrix
 		GLES10.glLoadIdentity();
 		// Calculate the aspect ratio of the window
-		
-	/*	GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
-				100.0f);*/
-		
 		GLU.gluOrtho2D(gl, 0.0f, (float) width, (float) height, (float)0.0);
-			
 		// Select the modelview matrix
 		GLES10.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
 		GLES10.glLoadIdentity();
-
     }
     //==========================================================================
     //==========================================================================
     /**
-     *	setup the js context running in this thread
+     * setup the js context running in this thread
      */
     public void setupJS() {
     	mJSContext = Context.enter();
@@ -225,7 +218,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 		long thisfps = Math.round (1.0 / (nowframe - mLastFrame) * 1000f); //calculate time 
 		mLastFrame = nowframe;
 		mfps = Math.round ((mfps * 0.9) + (0.1 * thisfps)); //weighted averaging
-		//Log.d("FPS",Long.toString(mfps));
+		Log.d("FPS",Long.toString(mfps));
 		return nowframe;
     }
     //==========================================================================

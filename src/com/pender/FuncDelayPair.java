@@ -4,13 +4,13 @@ package com.pender;
 import android.text.format.Time;
 
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.ScriptableObject;
 
 /**
  * 
  */
 class FuncDelayPair {
-	
+	//==========================================================================
+	//==========================================================================
 	/**
 	 * 
 	 * @param f
@@ -22,9 +22,8 @@ class FuncDelayPair {
 		delay = d;
 		lastdraw = 0;
 	}
-	
 	//==========================================================================
-
+	//==========================================================================
 	/**
 	 * 
 	 * @return
@@ -33,7 +32,8 @@ class FuncDelayPair {
 		 Time t = new Time();
 		 return this.ready(t.toMillis(false));
 	 }
-	
+	//==========================================================================
+	//==========================================================================
 	/**
 	 * returns true if delay has elapsed since last draw based on time
 	 * 
@@ -45,13 +45,12 @@ class FuncDelayPair {
 		}
 		return false;
 	}
-
 	//==========================================================================
-	
+	//==========================================================================
 	public Function func;
 	public float delay;
 	public boolean interval;
 	public long lastdraw;
-	
+	//==========================================================================
 	//==========================================================================
 }

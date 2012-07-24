@@ -46,17 +46,29 @@ public class Image {
     	mTexMapCoordBuffer.position (0);
     }
     //==========================================================================
+    public void setTexCoords (FloatBuffer buff) {
+    	mTexMapCoordBuffer = buff;
+    }    
+    //==========================================================================
     public void setTexCoords (float tx, float ty, float w, float h) {
+    	mTexMapCoordBuffer = calcTexCoords(tx,ty,w,h);
+    }
+    //==========================================================================
+    public FloatBuffer calcTexCoords (float tx, float ty, float w, float h) {
         float texcoords [] = { tx / mWidth    ,  ty / mHeight,
         					   tx / mWidth    , (ty+h) / mHeight,
         					   (tx+w) / mWidth, (ty+h) / mHeight,
         					   (tx+w) / mWidth,  ty / mHeight
         };
-    	ByteBuffer byteBuffer = ByteBuffer.allocateDirect (texcoords.length * 4);
+        
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect (texcoords.length * 4);
     	byteBuffer.order (ByteOrder.nativeOrder());
-    	mTexMapCoordBuffer = byteBuffer.asFloatBuffer();
-    	mTexMapCoordBuffer.put (texcoords);
-    	mTexMapCoordBuffer.position (0);
+        FloatBuffer texbuffer;
+    	texbuffer = byteBuffer.asFloatBuffer();
+    	texbuffer.put (texcoords);
+    	texbuffer.position (0);
+        
+        return texbuffer;
     }
     //==========================================================================
     private float mTexMapCoords [] = {
