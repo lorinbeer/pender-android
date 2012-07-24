@@ -49,17 +49,16 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         mLastFrame = 0;
         mfps = 0;
         mSetfps = 60;
-        
+
         mCanvas = new PenderCanvas(this);
         mLoadMap = new HashMap<Integer,Bitmap>();
         mPenderJS = new PenderJS(handler,mCanvas);
-
-//        setupJS();
     }
     //==========================================================================
     @Override
     public void onDrawFrame (GL10 gl) {
-    	
+    	ArrayList<FuncDelayPair> delayed = null;
+    	long nowframe = 0;
     	if (!mLoadMap.isEmpty()) {
     		Iterator<Integer> it = mLoadMap.keySet().iterator();
 
@@ -70,26 +69,25 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		}
     	}
 
-    	long nowframe = new Date().getTime();
-  
     	if (mPenderJS.ready() ) {
-    		long thisfps = Math.round( 1.0 / (nowframe - mLastFrame)*1000f ); //calculate time 
-    		mLastFrame = nowframe;
-    		mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
-    		Log.d("FPS",Long.toString(mfps));
-    		ArrayList<FuncDelayPair> delayed = mPenderJS.getDelayed();
-    		
-        	mJSContext = Context.enter();
-        	mJSContext.setOptimizationLevel(-1);
-    		
-    		for (int i = 0; i < delayed.size(); i++) {
-    			FuncDelayPair funky = delayed.get(i);
-    			if (funky.ready(nowframe)) {
-    				funky.func.call(mJSContext, mJSScope, mJSScope, new Object[]{});
-    				this.execScript(funky.func); // have a funky time!
-   				}
-   			}
-    	}
+    		delayed = mPenderJS.getDelayed();
+    		nowframe = updatefps();
+    		try {
+    			mJSContext = Context.enter();
+    			mJSContext.setOptimizationLevel(-1);
+    			for (int i = 0; i < delayed.size(); i++) {
+   					FuncDelayPair funky = delayed.get(i);
+   					if (funky.ready(nowframe)) {
+   						funky.func.call(mJSContext, 
+   										mJSScope, 
+   										mJSScope, 
+   										new Object[] {});
+   					}
+   				} // end 
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    	} // end try
     }
     //==========================================================================
     @Override
@@ -217,12 +215,24 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         Context.exit();
     }
     //==========================================================================
-
+    /**
+     * calculate and update the frame rate
+     *   uses a weigted average: running fps * 0.9 + current fps * 0.1
+     *   @return the timestamp of the current frame
+     */
+    private long updatefps () {
+    	long nowframe = new Date().getTime(); // get the current frames time stamp
+		long thisfps = Math.round (1.0 / (nowframe - mLastFrame) * 1000f); //calculate time 
+		mLastFrame = nowframe;
+		mfps = Math.round ((mfps * 0.9) + (0.1 * thisfps)); //weighted averaging
+		//Log.d("FPS",Long.toString(mfps));
+		return nowframe;
+    }
     //==========================================================================
     //==========================================================================
-    private long mLastFrame;
-    private long mfps;
-    private int mSetfps;
+    private long mLastFrame; // the timestamp of the last frame
+    private long mfps; // the running calculation of the framerate
+    private int mSetfps; //
 
     private HashMap<Integer,Bitmap> mLoadMap;
 
