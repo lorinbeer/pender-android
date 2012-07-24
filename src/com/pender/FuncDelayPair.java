@@ -3,6 +3,9 @@ package com.pender;
 
 import android.text.format.Time;
 
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.ScriptableObject;
+
 /**
  * 
  */
@@ -14,7 +17,7 @@ class FuncDelayPair {
 	 * @param d
 	 * @param interval
 	 */
-	public FuncDelayPair(int f, float d, boolean interval) {
+	public FuncDelayPair(Function f, float d, boolean interval) {
 		func = f;
 		delay = d;
 		lastdraw = 0;
@@ -45,7 +48,7 @@ class FuncDelayPair {
 
 	//==========================================================================
 	
-	public int func;
+	public Function func;
 	public float delay;
 	public boolean interval;
 	public long lastdraw;

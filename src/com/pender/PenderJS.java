@@ -121,10 +121,9 @@ public class PenderJS {
 	 * @param func
 	 * @param period
 	 */
-	public void setInterval (ScriptableObject func, float period) {
-		Log.d("brass","balls");
-//		FuncDelayPair delayed = new FuncDelayPair(func, period, true);
-		//mDelayed.add(delayed);
+	public void setInterval (Function func, float period) {
+		FuncDelayPair delayed = new FuncDelayPair(func, period, true);
+		mDelayed.add(delayed);
 	}
 
 	//==========================================================================
