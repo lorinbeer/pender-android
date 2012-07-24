@@ -17,12 +17,13 @@
 
 package com.pender;
 
-import java.util.ArrayList;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES10;
 
+import com.pender.glaid.HashableFloatArray;
 import com.pender.glaid.Image;
 import com.pender.glaid.Polygon;
 
@@ -30,17 +31,9 @@ import com.pender.glaid.Polygon;
 public class PenderCanvas {
 	//========================================================================== 
 	public PenderCanvas( PenderRenderer renderer ) {
-		float vert[] = { 
-	  		      100.0f, 300f, 0.0f,
-	  		      100.0f, 428.0f, 0.0f,
-	  		      228.0f, 428.0f, 0.0f,
-	  		      228.0f, 300.0f, 0.0f,
-	  	};
-
-	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
-	  	coords = new HashMap<float[],float[]>();
-		mPoly = new Polygon( vert, ind );
 		mRenderer = renderer;
+		mPolys = new HashMap<HashableFloatArray,Polygon>();
+		mTexCoords = new HashMap<HashableFloatArray,FloatBuffer>();
 	}
 	//==========================================================================
 	//==========================================================================
@@ -97,25 +90,34 @@ public class PenderCanvas {
      * @param dw image width
      * @param dh image height
      */
-    
     public void drawImage (Image img, float sx, float sy, float sw, float sh, 
                                       float dx, float dy, float dw, float dh) {
-    	float k[] = {dw,dh};
-    	float vert[] = null;
+    	HashableFloatArray k = new HashableFloatArray(new float[]{dw,dh});
+    	HashableFloatArray t = new HashableFloatArray(new float[]{sx,sy,dw,dh});
+    	Polygon poly = null;
+    	FloatBuffer texbuf = null;
     	if (img==null) {
     		throw new NullPointerException("Image cannot be null");
     	}
     	
-    	if (coords.containsKey(k)) {
-    		vert = coords.get(k);
+    	//
+    	if (mPolys.containsKey(k)) {
+    		poly = mPolys.get(k);
     	} else {
-    		vert = this.createVertArray(dw, dh);
+    		poly = this.createPoly(dw, dh);
+    		mPolys.put(k, poly);
     	}
-	  	short[] ind = { 0, 1, 2, 0, 2, 3 };
+    	
+    	//
+    	if(mTexCoords.containsKey(t)) {
+    		texbuf = mTexCoords.get(t);
+    	} else {
+    		texbuf = img.calcTexCoords(sx, sy, dw, dh);
+    		mTexCoords.put(t, texbuf);
+    	}
 	  	
-	  	Polygon poly = new Polygon (vert,ind);
 	  	img.setPoly(poly);
-    	img.setTexCoords(sx, sy, sw, sh);
+	  	img.setTexCoords(texbuf);
     	
     	GLES10.glMatrixMode (GLES10.GL_MODELVIEW);
     	GLES10.glPushMatrix ();
@@ -177,17 +179,33 @@ public class PenderCanvas {
     	GLES10.glClear(GLES10.GL_COLOR_BUFFER_BIT);
     }
     //==========================================================================
-    private float[] createVertArray(float width, float height) {
-    	float vert[] = {width, 0.0f, 0.0f,
-    					width, height, 0.0f,
-    					0.0f, height, 0.0f,
-    					0.0f, 0.0f, 0.0f,
-		};
+    /**
+     * creates a polygon of the specified dimensions
+     */
+    private Polygon createPoly(float width, float height) {
+    	short[] ind = { 0, 1, 2, 0, 2, 3 }; //we always use this wrapping
+    	float vert[] = createVertArray(width,height);
+    	return new Polygon(vert,ind);
+	  	
+    }
+    //==========================================================================
+    /**
+     * creates a vertex array representing a rectangle of specified dimensions
+     */
+    private float [] createVertArray(float width, float height) {
+		float vert[] = { 
+	  		      width, 0.0f, 0.0f,
+	  		      width, height, 0.0f,
+	  		      0.0f,  height, 0.0f,
+	  		      0.0f, 0.0f, 0.0f,
+	  	};
 		return vert;
     }
     //==========================================================================
-    Polygon mPoly;
-    PenderRenderer mRenderer;
-    HashMap<float[],float[]> coords;
+    //==========================================================================
+    private PenderRenderer mRenderer;
+    private HashMap<HashableFloatArray,Polygon> mPolys;
+    private HashMap<HashableFloatArray,FloatBuffer> mTexCoords;
+    //==========================================================================
     //==========================================================================
 }
