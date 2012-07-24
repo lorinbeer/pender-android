@@ -59,6 +59,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     //==========================================================================
     @Override
     public void onDrawFrame (GL10 gl) {
+    	
     	if (!mLoadMap.isEmpty()) {
     		Iterator<Integer> it = mLoadMap.keySet().iterator();
 
@@ -77,15 +78,18 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		mfps = Math.round( mfps*0.9 + 0.1*thisfps ); //weighted averaging
     		Log.d("FPS",Long.toString(mfps));
     		ArrayList<FuncDelayPair> delayed = mPenderJS.getDelayed();
+    		
+        	mJSContext = Context.enter();
+        	mJSContext.setOptimizationLevel(-1);
+    		
     		for (int i = 0; i < delayed.size(); i++) {
     			FuncDelayPair funky = delayed.get(i);
     			if (funky.ready(nowframe)) {
-    				//this.eexecScript(funky.func); // have a funky time!
-    				this.execScript("draw();");
+    				funky.func.call(mJSContext, mJSScope, mJSScope, new Object[]{});
+    				this.execScript(funky.func); // have a funky time!
    				}
    			}
     	}
-    	this.execScript("bots.draw();");
     }
     //==========================================================================
     @Override
@@ -195,8 +199,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     		e.printStackTrace(); 
     	}
     	Context.exit();
-
-    	this.execScript("console.log(\"FUCK YOUF FUCKING FUCKERS\");");
     }
     //==========================================================================   
     public void execScript (String script) {
