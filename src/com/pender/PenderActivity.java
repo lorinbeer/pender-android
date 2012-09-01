@@ -34,7 +34,7 @@ public class PenderActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHandler = new PenderHub(this);
+      //  mHandler = new PenderHub(this);
 
         mGLView = new PenderView(mHandler);
         initView();

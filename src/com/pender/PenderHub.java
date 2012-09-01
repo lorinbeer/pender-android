@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.pender.cordovaplugin.PenderCordova;
+
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,11 +35,12 @@ import android.util.Log;
 
 public class PenderHub extends Handler {
 	
-	public PenderHub( PenderActivity activity ) {
+	public PenderHub( PenderCordova activity ) {
 		
 		mActivity = activity;
 		
 	}
+
 	public void handleMessage(Message msg) {
 		InputStream instream = null;
 		try { 
@@ -84,8 +87,8 @@ public class PenderHub extends Handler {
 		
 	}
 	
-	public PenderActivity getActivity() { return mActivity; }
+	public PenderCordova getActivity() { return mActivity; }
 
-	private PenderActivity mActivity;
+	private PenderCordova mActivity;
 	
 }

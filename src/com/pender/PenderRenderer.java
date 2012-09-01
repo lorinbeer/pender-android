@@ -30,6 +30,7 @@ import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.opengl.GLES10;
 import android.opengl.GLSurfaceView;
@@ -55,7 +56,6 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         mPenderJS = new PenderJS(handler,mCanvas);
     }
     //==========================================================================
-    @Override
     public void onDrawFrame (GL10 gl) {
     	ArrayList<FuncDelayPair> delayed = null;
     	long nowframe = 0;
@@ -90,10 +90,9 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	} // end try
     }
     //==========================================================================
-    @Override
     public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
     	//opengl setup
-    	GLES10.glClearColor (0.0f, 0.0f, 0.0f, 0.5f);
+    	GLES10.glClearColor (1.0f, 1.0f, 1.0f, 0.0f);
     	GLES10.glShadeModel (GLES10.GL_SMOOTH);
     	GLES10.glClearDepthf (1.0f);
     	GLES10.glEnable (GLES10.GL_DEPTH_TEST);
@@ -102,20 +101,25 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     	GLES10.glBlendFunc (GLES10.GL_SRC_ALPHA, 
     						GLES10.GL_ONE_MINUS_SRC_ALPHA);
     	GLES10.glDepthFunc (GLES10.GL_LEQUAL);
-    	GLES10.glHint (GLES10.GL_PERSPECTIVE_CORRECTION_HINT, 
+    	/*GLES10.glHint (GLES10.GL_PERSPECTIVE_CORRECTION_HINT, 
     				   GLES10.GL_NICEST);
-    }
+    */} 
     //==========================================================================
-    @Override
     public void onSurfaceChanged( GL10 gl, int width, int height ) {
+    	if (mViewport == null) {
+    		mViewport= new int[] {0,0,width,height};
+    	}
     	// Sets the current view port to the new size.
-    	GLES10.glViewport(0, 0, width, height);
+    	GLES10.glViewport(mViewport[0], mViewport[1], mViewport[2], mViewport[3]);
+    	//GLES10.glViewport(0, 0, width, height);
 		// Select the projection matrix
 		GLES10.glMatrixMode(GL10.GL_PROJECTION);  
 		// Reset the projection matrix
 		GLES10.glLoadIdentity();
 		// Calculate the aspect ratio of the window
-		GLU.gluOrtho2D(gl, 0.0f, (float) width, (float) height, (float)0.0);
+	    //GLU.gluOrtho2D(gl, 0.0f, (float) width, (float) height, (float)0.0);
+	    GLES10.glOrthof(0, width, height, 0, -1, 1);
+		//GLU.gluOrtho2D(gl, 100.0f, 200.0f, 200.0f,100.0f);
 		// Select the modelview matrix
 		GLES10.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
@@ -144,9 +148,8 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 	    ScriptableObject.putProperty(mJSScope, "Pender", penderjs);
 	    Context.exit();
     }
-
     //==========================================================================
-    public void loadTexture (int id, Bitmap bmp) {
+    @SuppressLint({ "NewApi" }) public void loadTexture (int id, Bitmap bmp) {
        int[] texid = new int[1];
        GLES10.glGenTextures(1, texid, 0); //generate a single new texture id
        GLES10.glBindTexture(GL10.GL_TEXTURE_2D, texid[0] );
@@ -163,13 +166,21 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
        String script = "var image = "+texid[0]+";";
        mJSContext.evaluateString(mJSScope, script, "Insert Texture", 0, null);
 */
-       	float vert[] = { 
+  
+       float vert[] = {
+           0.0f,   0.0f,   0.0f,
+           0.0f,   128.0f, 0.0f,
+           128.0f, 128.0f, 0.0f,
+           128.0f, 0.0f,   0.0f
+       };
+
+/*       float vert[] = { 
 	      100.0f, 300f, 0.0f,
 	      100.0f, 428.0f, 0.0f,
 	      228.0f, 428.0f, 0.0f,
-	      228.0f, 300.0f, 0.0f,
+	      228.0f, 300.0f, 0.0f
        	};
-
+*/
        	short[] ind = { 0, 1, 2, 0, 2, 3 };
 
        	Polygon poly = new Polygon (vert, ind);
@@ -205,7 +216,7 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
         } catch(Exception e) {
         	e.printStackTrace();
         }  
-        Context.exit();
+        Context.exit(); 
     }
     //==========================================================================
     /**
@@ -221,12 +232,26 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
 		Log.d("FPS",Long.toString(mfps));
 		return nowframe;
     }
+    
+ 	/**
+ 	 * set the viewport
+ 	 * @param x Specify the x coordinate of the lower left corner of the viewport rectangle, in pixels. The initial value is 0.
+ 	 * @param y Specify the y coordinate of the lower left corner of the viewport rectangle, in pixels. The initial value is 0.
+ 	 * @param width Specify the width of the viewport.
+ 	 * @param height Specify the height of the viewport.
+ 	 */
+ 	public void setViewPort(int x, int y, int width, int height ) {
+ 		mViewport = new int[] {x,y,width,height};
+ 	    GLES10.glViewport(x, y, width, height);
+ 	} 
     //==========================================================================
     //==========================================================================
     private long mLastFrame; // the timestamp of the last frame
     private long mfps; // the running calculation of the framerate
     private int mSetfps; //
 
+    private int[] mViewport;
+    
     private HashMap<Integer,Bitmap> mLoadMap;
 
     private PenderCanvas mCanvas;

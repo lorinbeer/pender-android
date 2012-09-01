@@ -46,15 +46,16 @@ public class PenderView extends GLSurfaceView {
     		 }
     	 });
      }
-
+ 	
      public void loadTexture( final Bitmap bmp, final int id ) {
-         this.queueEvent(new Runnable() {
-             public void run() {
-            	 ((PenderRenderer) mRenderer).requestLoad(id,bmp);
+    	 this.queueEvent(new Runnable() {
+    		 public void run() {
+    			 ((PenderRenderer) mRenderer).requestLoad(id,bmp);
              }
          });
      }
-     
+
+     public GLSurfaceView.Renderer getRenderer() { return mRenderer; }
 
     GLSurfaceView.Renderer mRenderer;
 

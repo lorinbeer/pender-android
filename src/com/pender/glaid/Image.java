@@ -55,12 +55,16 @@ public class Image {
     }
     //==========================================================================
     public FloatBuffer calcTexCoords (float tx, float ty, float w, float h) {
-        float texcoords [] = { tx / mWidth    ,  ty / mHeight,
-        					   tx / mWidth    , (ty+h) / mHeight,
-        					   (tx+w) / mWidth, (ty+h) / mHeight,
-        					   (tx+w) / mWidth,  ty / mHeight
+        float texcoords [] = { (tx+w-1) / (mWidth),  (ty+1)/ (mHeight),
+        					   (tx+w-1) / (mWidth), (ty+h-1) / (mHeight),
+        					   (tx+1)/ (mWidth), (ty+h-1) / (mHeight),
+        				       (tx+1) / (mWidth),  (ty+1)/ (mHeight)
+        					
         };
-        
+   /* 	float texcoords [] = { 1.0f - 2.0f / mWidth, 2.0f/mHeight, 
+    						   0.0f, 1.0f, 
+    						   1.0f,1.0f, 
+    						   1.0f,0.0f };*/
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect (texcoords.length * 4);
     	byteBuffer.order (ByteOrder.nativeOrder());
         FloatBuffer texbuffer;
