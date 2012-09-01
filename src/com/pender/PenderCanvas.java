@@ -93,7 +93,7 @@ public class PenderCanvas {
     public void drawImage (Image img, float sx, float sy, float sw, float sh, 
                                       float dx, float dy, float dw, float dh) {
     	HashableFloatArray k = new HashableFloatArray(new float[]{dw,dh});
-    	HashableFloatArray t = new HashableFloatArray(new float[]{sx,sy,dw,dh});
+    	HashableFloatArray t = new HashableFloatArray(new float[]{sx,sy,sw,sh});
     	Polygon poly = null;
     	FloatBuffer texbuf = null;
     	if (img==null) {
@@ -112,7 +112,7 @@ public class PenderCanvas {
     	if(mTexCoords.containsKey(t)) {
     		texbuf = mTexCoords.get(t);
     	} else {
-    		texbuf = img.calcTexCoords(sx, sy, dw, dh);
+    		texbuf = img.calcTexCoords(sx, sy, sw, sh);
     		mTexCoords.put(t, texbuf);
     	}
 	  	

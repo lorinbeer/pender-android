@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 import android.os.Message;
-import android.util.Log;
 
 
 //import org.mozilla.javascript.
@@ -37,7 +36,7 @@ import com.pender.glaid.Image;
  */
 public class PenderJS {
 	//==========================================================================
-	// Public members, to be accessed in a js like way
+	// Public members, to be accessed in a js like way we need to stop this
 	//==========================================================================
 
 	public PenderCanvas canvas;
@@ -143,6 +142,20 @@ public class PenderJS {
 	//==========================================================================
 
 	/**
+	 * set the viewport
+	 * @param x Specify the x coordinate of the lower left corner of the viewport rectangle, in pixels. The initial value is 0.
+	 * @param y Specify the y coordinate of the lower left corner of the viewport rectangle, in pixels. The initial value is 0.
+	 * @param width Specify the width of the viewport.
+	 * @param height Specify the height of the viewport.
+	 */
+	public void setViewPort(int x, int y, int width, int height ) {
+	    
+	}
+	
+	//==========================================================================
+	//==========================================================================	
+
+	/**
 	 * query the current state of Pender
 	 * 	true is Ready
 	 * 	false is pending
@@ -167,10 +180,10 @@ public class PenderJS {
 
 	// list of functions to execute after a specified period/delay
 	private ArrayList<FuncDelayPair> mDelayed;
-	
+
 	// custom message handler
 	private PenderHub mHandler;
-	
+
 	// blarg
 	private HashMap<Integer,Image> mImageMap;
 
@@ -179,5 +192,8 @@ public class PenderJS {
 
 	// ready flag, off when waiting on asynchronous processes
 	private boolean mReady;
+
+	// specifies the current viewport transition animation formula
+	private int mViewportTransition;
 	//==========================================================================
 }
