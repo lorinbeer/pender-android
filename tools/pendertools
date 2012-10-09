@@ -1,0 +1,57 @@
+
+
+
+ls
+ls
+ls
+echo "hello"
+
+
+vflag=off
+filename=
+
+
+target=
+name=
+path=
+activity=
+
+createdevproject() {
+    android -h    
+   # android target name path activity
+}
+
+##
+#
+#
+##
+AndroidTargets=()
+availabletargets() {
+    count=0
+    android list targets | 
+	while read targ; 
+	do 
+	    #echo $targ; 
+	    #echo spacespace;
+            #echo $count;
+	    ((count++))
+	    AndroidTargets[$count]= grep -o id:.[0-9]*
+	done    
+    return $count;
+}
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -v) vflag=on;;
+	-f) filename="$2"; shift;;
+	-*) echo >&2 \
+	    "usage: $0 [-v] [-f file] [file ...]"
+	    exit 1;;
+	*)  break;;	# terminate while loop
+    esac
+    shift
+done
+
+numbtargs= availabletargets
+echo $numbtairgs
