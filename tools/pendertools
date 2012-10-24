@@ -1,52 +1,89 @@
+## Copyright 2012 Adobe Systems Incorporated
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+##
 
+##
+#
+#
+#
+#
+##
 
+latestandroidtarget= #holds latest android target identified 
 
-ls
-ls
-ls
-echo "hello"
+# hold command line arguments
+target=-1
+name=PenderClient
+path=PenderClient
+activity=com.pender.client
 
+createcommand="android create project"
 
-vflag=off
-filename=
-
-
-target=
-name=
-path=
-activity=
-
+##
+#
+#
+##
 createdevproject() {
-    android -h    
-   # android target name path activity
+    latesttarget 
+    if [ $target -gt 0 ]
+      then
+        echo $target 
+      else
+        echo $latestandroidtarget
+    fi
+
+     
+
 }
+
 
 ##
 #
 #
 ##
-AndroidTargetNumber=0
-AndroidTargets=()
 
-availabletargets() {
-    count=0
-    AndroidTargets=$(android list targets | grep -o id:.[1-9][0-9]* | sed/id:/ ) 
-    echo $AndroidTargets
-    return
+
+
+##
+#
+#
+##
+latesttarget() {
+    AndroidTargets=$(android list targets | grep -o id:.[1-9][0-9]* | sed s/id://)
+    AndroidTargets=($AndroidTargets)
+    latestandroidtarget=${#AndroidTargets[@]}
 }
 
-#while [ $# -gt 0 ]
-#do
-#    case "$1" in
-#        -v) vflag=on;;
-#	-f) filename="$2"; shift;;
-#	-*) echo >&2 \
-#	    "usage: $0 [-v] [-f file] [file ...]"
-#	    exit 1;;
-#	*)  break;;	# terminate while loop
-#   esac
-#  shift
-#done
 
-availabletargets
-echo $AndroidTargetNumber
+##
+# process command line arguments
+##
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -t|--target) target="$2"; shift
+	;;
+	-n|--name) name="$2"; shift
+	;;
+	-p|--path) filename="$2"; shift
+	;;
+        -a|--activity) activity="$2"; shift
+	;;
+	*) #break;;
+   esac
+  shift
+done
+
+
+createdevproject
