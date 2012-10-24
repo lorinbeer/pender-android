@@ -25,33 +25,28 @@ createdevproject() {
 #
 #
 ##
+AndroidTargetNumber=0
 AndroidTargets=()
+
 availabletargets() {
     count=0
-    android list targets | 
-	while read targ; 
-	do 
-	    #echo $targ; 
-	    #echo spacespace;
-            #echo $count;
-	    ((count++))
-	    AndroidTargets[$count]= grep -o id:.[0-9]*
-	done    
-    return $count;
+    AndroidTargets=$(android list targets | grep -o id:.[1-9][0-9]* | sed/id:/ ) 
+    echo $AndroidTargets
+    return
 }
 
-while [ $# -gt 0 ]
-do
-    case "$1" in
-        -v) vflag=on;;
-	-f) filename="$2"; shift;;
-	-*) echo >&2 \
-	    "usage: $0 [-v] [-f file] [file ...]"
-	    exit 1;;
-	*)  break;;	# terminate while loop
-    esac
-    shift
-done
+#while [ $# -gt 0 ]
+#do
+#    case "$1" in
+#        -v) vflag=on;;
+#	-f) filename="$2"; shift;;
+#	-*) echo >&2 \
+#	    "usage: $0 [-v] [-f file] [file ...]"
+#	    exit 1;;
+#	*)  break;;	# terminate while loop
+#   esac
+#  shift
+#done
 
-numbtargs= availabletargets
-echo $numbtairgs
+availabletargets
+echo $AndroidTargetNumber
