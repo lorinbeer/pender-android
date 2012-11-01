@@ -14,55 +14,71 @@
 ##
 
 ##
+# Build script for Pender Android
 #
-#
-#
+# Lorin Beer
+# lorin@adobe.com
+# github.com/lorinbeer
 #
 ##
 
 latestandroidtarget= #holds latest android target identified 
 
 # hold command line arguments
-target=-1
+target=8
 name=PenderClient
 path=PenderClient
 activity=com.pender.client
+package=com.pender
 
-createcommand="android create project"
+# error messages
+penderandroiderror="Pender Build Tools couldn't find any android targets\nPender depends on the Android SDK android tool accessible on the command line"
+
+# create lib command silhouette
+createlibcommand="android create lib-project --name Pender --target <targetid> --path <path> --package <package>"
+
+# create project command silhouette
+createcommand="android create project --target <target> --path <path>  --package <package>  --activity <activityid>"
 
 ##
 #
 #
 ##
-createdevproject() {
-    latesttarget 
+createclientproject() {
+    latesttarget
     if [ $target -gt 0 ]
       then
         echo $target 
       else
         echo $latestandroidtarget
     fi
-
-     
-
 }
 
+##
+# 
+#
+##
+createlibraryproject() {
+    createcmd=$(echo $createlibcommand | sed -e  s/'<targetid>'/$target/ -e  s/'<path>'/$path/ -e  s/'<package>'/$package/)
+    $createcmd 
+}
 
 ##
-#
-#
-##
-
-
-
-##
-#
-#
+# divine the latest android target code installed on the system 
 ##
 latesttarget() {
     AndroidTargets=$(android list targets | grep -o id:.[1-9][0-9]* | sed s/id://)
     AndroidTargets=($AndroidTargets)
     latestandroidtarget=${#AndroidTargets[@]}
+
+    # sanity test for android target
+    if [ -z $latestandroidtarget ]
+    then
+        echo -e $penderandroiderror
+    elif [ $latestandroidtarget -lt 0 ]
+    then
+        echo -e $penderandroiderror
+    fi
 }
 
 
@@ -72,11 +88,21 @@ latesttarget() {
 while [ $# -gt 0 ]
 do
     case "$1" in
+        -h|--help) cat help; 
+        exit;;
+        -l|--library) createmode="library"
+        ;;
+        -c|--client) createmode="client"
+        ;;
+        -s|--libloc) libloc="$2"; shift
+        ;;
         -t|--target) target="$2"; shift
 	;;
 	-n|--name) name="$2"; shift
 	;;
 	-p|--path) filename="$2"; shift
+	;;
+        -k|--package) package="$2"; shift
 	;;
         -a|--activity) activity="$2"; shift
 	;;
@@ -86,4 +112,15 @@ do
 done
 
 
-createdevproject
+if [ $createmode=="library" ]
+then
+    if [ -z $libloc ]
+    then
+        createlibraryproject    
+    fi
+    createlibraryproject
+elif [ $createmode=="client" ]
+then
+    createlibraryproject
+    createclientproject
+fi
