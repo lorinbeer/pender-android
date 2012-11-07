@@ -15,15 +15,15 @@ this is the Android version
 
 * Obtain Pender Source
 
-    git clone git@github.com:lorinbeer/Pender-android.git
+	git clone git@github.com:lorinbeer/Pender-android.git
 
 * navigate to Pender-android/tools
 
-    cd Pender-android/tools
+	cd Pender-android/tools
 
 * Create a Pender Android project, omitting -p will create a pender android project in the current directory
 
-    ./pendertools -p /path/to/put/pender/project
+	./pendertools -p /path/to/put/pender/project
 
 
 ##Pender Build Tool
