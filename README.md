@@ -5,6 +5,39 @@ this is the Android version
 
 ##Status
 
+##Requirements
+* Android SDK
+* git
+
+##Quick Started
+
+* open a unix terminal or terminal emulator (OSX Terminal, Windows Cygwin etc)
+
+* Obtain Pender Source
+
+    git clone git@github.com:lorinbeer/Pender-android.git
+
+* navigate to Pender-android/tools
+
+    cd Pender-android/tools
+
+* Create a Pender Android project, omitting -p will create a pender android project in the current directory
+
+    ./pendertools -p /path/to/put/pender/project
+
+
+##Pender Build Tool
+
+* run the pendertool from the tools directory
+
+    cd Pender-android/tools
+
+    ./pendertools
+
+* for a complete list of options
+
+    ./pendertools -h
+
 
 ##Embedded Javascript Engine
 
