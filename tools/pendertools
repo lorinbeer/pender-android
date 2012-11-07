@@ -26,13 +26,17 @@ latestandroidtarget= #holds latest android target identified
 
 # hold command line arguments
 target=8
+libname=PenderAndroidLibrary
+gitclone="git clone git@github.com:lorinbeer/Pender-android.git"
 name=PenderClient
 path=PenderClient
 activity=com.pender.client
 package=com.pender
+libloc=""
 
 # error messages
 penderandroiderror="Pender Build Tools couldn't find any android targets\nPender depends on the Android SDK android tool accessible on the command line"
+penderliblocerror="Pender Library location not specified or not found"
 
 # create lib command silhouette
 createlibcommand="android create lib-project --name Pender --target <targetid> --path <path> --package <package>"
@@ -41,8 +45,7 @@ createlibcommand="android create lib-project --name Pender --target <targetid> -
 createcommand="android create project --target <target> --path <path>  --package <package>  --activity <activityid>"
 
 ##
-#
-#
+# creates an android project using the appropriate arguments substituted into the library create command
 ##
 createclientproject() {
     latesttarget
@@ -55,12 +58,18 @@ createclientproject() {
 }
 
 ##
-# 
-#
+# creates an android library project using the appropriate arguments substituted into the library create command
 ##
 createlibraryproject() {
-    createcmd=$(echo $createlibcommand | sed -e  s/'<targetid>'/$target/ -e  s/'<path>'/$path/ -e  s/'<package>'/$package/)
-    $createcmd 
+    if [ -z $libloc ]
+    then
+        path=$libname 
+    else
+        path=$libloc\/$libname
+    fi
+    createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$path* -e s*'<package>'*$package*)
+    $createcmd
+    copysource
 }
 
 ##
@@ -81,6 +90,12 @@ latesttarget() {
     fi
 }
 
+##
+# copy the source
+##
+copysource() {
+    cp -r ../src $libname
+}
 
 ##
 # process command line arguments
@@ -111,16 +126,22 @@ do
   shift
 done
 
-
+##
+# execute create mode
+##
 if [ $createmode=="library" ]
 then
-    if [ -z $libloc ]
+    echo "PenderTools: Creating Library Project"
+    echo $libloc
+    if [ -z "$libloc" ]
     then
-        createlibraryproject    
+        currentdirectory=pwd
+        echo "PenderTools: libloc not specified, creating library project here" `pwd`
     fi
     createlibraryproject
 elif [ $createmode=="client" ]
 then
+    echo "PenderTools: Creating Client Project"
     createlibraryproject
     createclientproject
 fi
