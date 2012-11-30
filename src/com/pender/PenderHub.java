@@ -34,61 +34,57 @@ import android.util.Log;
 
 
 public class PenderHub extends Handler {
-	
-	public PenderHub( PenderCordova activity ) {
-		
-		mActivity = activity;
-		
-	}
+    /**
+     *
+     */
+    public PenderHub( PenderCordova activity ) {        
+        mActivity = activity;       
+    }
 
-	public void handleMessage(Message msg) {
-		InputStream instream = null;
-		try { 
-			String path = (String)msg.obj;
-			instream = mActivity.getAssets().open( path );
-		    final Bitmap temp = BitmapFactory.decodeStream(instream);
-		    mActivity.getView().loadTexture( temp, msg.arg2 );		
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 
-	 * @param msg
-	 */
-	public void runScript(Message msg) {
-    	BufferedReader reader = null;
-    	StringBuffer script = new StringBuffer();
-    	String path = null;
-		try { 
-			path = (String)msg.obj;
-	  	    AssetManager al = this.mActivity.getAssets(); //sharpshooting hulk
-	  	    reader = new BufferedReader( 
-  					new InputStreamReader( 
-  						al.open(path)));
-	  	    String buf = "";
-	  	    while(( buf = reader.readLine()) != null) {
-	  	    	script.append("\n");
-	  	    	script.append(buf);
-	  	    }
-		} catch (IOException e ) {
-  	    	Log.d("exception", e.toString() );
-  	    	Log.d("PENDER","STRING PATH: "+path+" DOES NOT COMPUTE. Please ensure that the file exists in a subdirectory of assets eg \"demos/client/penderdemo.js\"");
-  	    }
-		String str = script.toString();
-		mActivity.getView().execScripts(msg.obj);
-	}
+    /**
+     *
+     */
+    public void handleMessage(Message msg) {
+        InputStream instream = null;
+        try { 
+            String path = (String)msg.obj;
+            instream = mActivity.getAssets().open( path );
+            final Bitmap temp = BitmapFactory.decodeStream(instream);
+            mActivity.getView().loadTexture( temp, msg.arg2 );      
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 
+     * @param msg
+     */
+    public void runScript(Message msg) {
+        BufferedReader reader = null;
+        StringBuffer script = new StringBuffer();
+        String path = null;
+        try { 
+            path = (String)msg.obj;
+            AssetManager al = this.mActivity.getAssets(); //sharpshooting hulk
+            reader = new BufferedReader( 
+                    new InputStreamReader( 
+                        al.open(path)));
+            String buf = "";
+            while(( buf = reader.readLine()) != null) {
+                script.append("\n");
+                script.append(buf);
+            }
+        } catch (IOException e ) {
+            Log.d("exception", e.toString() );
+            Log.d("PENDER","STRING PATH: "+path+" DOES NOT COMPUTE. Please ensure that the file exists in a subdirectory of assets eg \"demos/client/penderdemo.js\"");
+        }
+        String str = script.toString();
+        mActivity.getView().execScripts(msg.obj);
+    }
 
-	/**
-	 * 
-	 */
-	public void interpretFile() {
-		
-	}
-	
-	public PenderCordova getActivity() { return mActivity; }
+    //=============================================================================================== 
 
-	private PenderCordova mActivity;
-	
+    private Activity mMainActivity;
+    
 }
