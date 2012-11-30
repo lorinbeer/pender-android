@@ -29,7 +29,7 @@ target=8
 libname=PenderAndroidLibrary
 gitclone="git clone git@github.com:lorinbeer/Pender-android.git"
 name=PenderClient
-path=PenderClient
+path=""
 activity=com.pender.client
 package=com.pender
 libloc=""
@@ -61,13 +61,14 @@ createclientproject() {
 # creates an android library project using the appropriate arguments substituted into the library create command
 ##
 createlibraryproject() {
-    if [ -z $libloc ]
+    if [ -z $path ]
     then
-        path=$libname 
+        pa=$libname 
     else
-        path=$libloc\/$libname
+        pa=$path\/$libname
     fi
-    createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$path* -e s*'<package>'*$package*)
+    createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$package*)
+    echo $createcmd
     $createcmd
     copysource
 }
@@ -115,7 +116,7 @@ do
 	;;
 	-n|--name) name="$2"; shift
 	;;
-	-p|--path) filename="$2"; shift
+	-p|--path) path="$2"; shift
 	;;
         -k|--package) package="$2"; shift
 	;;
@@ -132,11 +133,10 @@ done
 if [ $createmode=="library" ]
 then
     echo "PenderTools: Creating Library Project"
-    echo $libloc
-    if [ -z "$libloc" ]
+    if [ -z "$path" ]
     then
         currentdirectory=pwd
-        echo "PenderTools: libloc not specified, creating library project here" `pwd`
+        echo "PenderTools: path not specified, creating library project here" `pwd`
     fi
     createlibraryproject
 elif [ $createmode=="client" ]
