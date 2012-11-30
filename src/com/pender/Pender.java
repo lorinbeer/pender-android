@@ -36,11 +36,14 @@ import android.util.Log;
 import android.widget.RelativeLayout;
 
 
-
+/**
+ *
+ *
+ */
 public class Pender {
 
-    /*
-     *
+    /**
+     * 
      *
      */
     public Pender() {
