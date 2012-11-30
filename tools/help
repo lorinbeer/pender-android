@@ -1,0 +1,17 @@
+Pender Build Tools
+
+Run from the tools directory of the repository
+
+Usage:
+    -h --help    : print this message, all other command line arguments are ignored
+    -l --library : create Pender Library project
+    -c --client  : create a Pender Client project, creates a pender library project if one has not already been created or referenced
+    -s --libloc  : specify the path of an existing Pender Lib project
+
+Pender Build Tools will generate sane default arguments for the android tool, specify them if you wish to override
+Arguments to the Android SDK android tool:
+    -n --name     : Project name [default: PenderClient/PenderLib]
+    -t --target   : Target ID of the new project [default: will attempt to detect and use the latest version of the sdk]
+    -p --path     : The new project's directory [default: current directory]
+    -k --package  : Android package name for the application. [default: com.pender]
+    -a --activity : Name of the default Activity that is created. [default: PenderActivity]
