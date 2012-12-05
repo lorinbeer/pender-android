@@ -1,15 +1,37 @@
-# Pender Android v0.1a
+# Pender Android
 
-2D Hardware accelerated Canvas context for mobile
-this is the Android version
+Pender Android is an Android application library which allows Pender client applications to be built and run for the Android platform. Pender Client applications are implemented in javascript.
 
-##Status
 
-##Requirements
-* Android SDK
+## What's a Pender?
+
+Pender is a dom-less JS runtime with a high-performance graphics api implementing the HTML5 Canvas spec. Pender is open source and multiplatform..
+
+The primary goal is to provide a hardware accelerated graphics api to mobile devices which lack high performance graphics in the native browser. The impetus behind that is mobile game development using web tech. On a given platform, we use an embedded javascript engine to provide faster js processing, and tighter coupling between native and js api's. 
+
+Pender's use case philosophy mirrors phonegap/cordova's: write once, run everywhere. A Pender "client" application is a javascript renderer (e.g. a game engine) expecting a canvas api. On desktop browsers, or any browser with a hardware accelerated canvas implementation (IE9), a shim allows Pender Clients to run without modification. On Android/iOS, the Pender Client is dropped into a project container, and Pender supplies the necessary js hooks. 
+
+
+## Platform Status
+
+Android is currently Pender's flagship platform. We are in a demo-able state, with excellent performance from a custom render stress test. The Cordova Pender Plugin allows communication with Phonegap/Cordova allowing various use cases, including: 
+
+* use Cordova's Webview as a UI layer
+
+* use Pender to mimic an embedded canvas element
+
+* leverage Cordova's plugins (Twitter, Facebook, etc)
+
+## Requirements
+
+* Java JDK 1.5 or greater
+
+* Android SDK [http://developer.android.com](http://developer.android.com)
+
 * git
 
-##Quick Started
+
+##Quick Start
 
 * open a unix terminal or terminal emulator (OSX Terminal, Windows Cygwin etc)
 
