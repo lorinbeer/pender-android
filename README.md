@@ -56,6 +56,8 @@ Android is currently Pender's flagship platform. We are in a demo-able state, wi
 
         ./pendertools
 
+executing the script without arguments will create an Android library project in the current working directory.
+
 * for a complete list of options
 
         ./pendertools -h
@@ -64,18 +66,20 @@ Android is currently Pender's flagship platform. We are in a demo-able state, wi
 ##Embedded Javascript Engine
 
 Pender uses an embedded Javascript engine. This allows for fast dynamic parsing of javascript targeting the Pender Canvas. 
-On Android and Blackberry, Rhino is used. A static library is provided along with the project.
+On Android and Blackberry, Rhino is used. Efforts are currently underway to upgrade Pender Android to V8. A static library is provided along with the project.
 
 the rest of the Pender project:
 
-* [Pender Android](https://github.com/doggerelverse/Pender-android)
+* [Pender Docs](https://github.com/lorinbeer/pender-docs)
 
-* [Pender iOS](https://github.com/doggerelverse/Pender-ios)
+* [Pender Android](https://github.com/lorinbeer/pender-android)
 
-* [Pender Blackberry](https://github.com/doggerelverse/Pender-blackberry)
+* [Pender iOS](https://github.com/lorinbeer/pender-ios)
 
-* [Pender Windows Phone 7](https://github.com/doggerelverse/Pender-wp7)
+* [Pender Blackberry](https://github.com/lorinbeer/pender-blackberry)
 
-* [Pender Desktop](https://github.com/doggerelverse/Pender-desktop)
+* [Pender Windows Phone 7](https://github.com/lorinbeer/pender-wp7)
 
-* [Pender demos](https://github.com/doggerelverse/Pender-demos)
+* [Pender Desktop](https://github.com/lorinbeer/pender-desktop)
+
+* [Pender demos](https://github.com/lorinbeer/pender-demos)
