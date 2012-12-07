@@ -25,7 +25,7 @@
 latestandroidtarget= #holds latest android target identified 
 
 # hold command line arguments
-target=8
+target=android-8
 libname=PenderAndroidLibrary
 gitclone="git clone git@github.com:lorinbeer/Pender-android.git"
 name=PenderClient
@@ -61,6 +61,7 @@ createclientproject() {
 # creates an android library project using the appropriate arguments substituted into the library create command
 ##
 createlibraryproject() {
+    latesttarget
     if [ -z $path ]
     then
         pa=$libname 
@@ -88,6 +89,9 @@ latesttarget() {
     elif [ $latestandroidtarget -lt 0 ]
     then
         echo -e $penderandroiderror
+    else
+        target=$latestandroidtarget
+        echo -e $targetid
     fi
 }
 

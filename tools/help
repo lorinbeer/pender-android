@@ -9,6 +9,7 @@ Usage:
     -s --libloc  : specify the path of an existing Pender Lib project
 
 Pender Build Tools will generate sane default arguments for the android tool, specify them if you wish to override
+
 Arguments to the Android SDK android tool:
     -n --name     : Project name [default: PenderClient/PenderLib]
     -t --target   : Target ID of the new project [default: will attempt to detect and use the latest version of the sdk]
