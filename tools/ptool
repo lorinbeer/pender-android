@@ -158,7 +158,7 @@ elif [ "$createmode" == "client" ]
 then
     echo "PenderTools: Creating Client Project"
     createlibraryproject
-    createclientprojec
+    createclientproject
 else
    cat help 
 fi
