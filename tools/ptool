@@ -32,8 +32,9 @@ gitclone="git clone git@github.com:lorinbeer/Pender-android.git"
 name=PenderClient
 path=""
 activity=PenderActivity
-package=com.pender
-libloc=""
+projpackage=com.pender.client
+libpackage=com.pender
+libloc="../PenderAndroidLibrary"
 
 # error messages
 penderandroiderror="Pender Build Tools couldn't find any android targets\nPender depends on the Android SDK android tool accessible on the command line"
@@ -44,6 +45,9 @@ createlibcommand="android create lib-project --name Pender --target <targetid> -
 
 # create project command silhouette
 createcommand="android create project --target <targetid> --path <path>  --package <package>  --activity <activityid>"
+
+# update project
+updatecommand="android update project --path <path> --library <libloc>"
 
 ##
 # creates an android project using the appropriate arguments substituted into the library create command
@@ -59,8 +63,8 @@ createclientproject() {
     if [ $target -gt 0 ]
       then
         echo $target
-        createcmd=$(echo $createcommand | sed -e s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$package* -e s*'<activityid>'*$activity*) 
-	echo $createcmd
+        createcmd=$(echo $createcommand | sed -e s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$projpackage* -e s*'<activityid>'*$activity*) 
+    	echo $createcmd
         $createcmd
       else
         echo $latestandroidtarget
@@ -78,10 +82,25 @@ createlibraryproject() {
     else
         pa=$path\/$libname
     fi
-    createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$package*)
+    createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$libpackage*)
     echo $createcmd
     $createcmd
     copysource
+}
+
+##
+# update the client project linking it with the library
+##
+updateproject() {
+    if [ -z $path]
+    then
+        pa=$projectname
+    else
+        pa=$path\/$libname
+    fi
+    updatecmd=$(echo $updatecommand | sed -e s*'<path>'*$pa* -e s*'<libloc>'*$libloc*)
+    echo $updatecmd
+    $updatecmd
 }
 
 ##
@@ -112,6 +131,8 @@ copysource() {
     cp -r ../src $libname
 }
 
+
+
 ##
 # process command line arguments
 ##
@@ -127,15 +148,15 @@ do
         -s|--libloc) libloc="$2"; shift
         ;;
         -t|--target) target="$2"; shift
-	;;
-	-n|--name) name="$2"; shift
-	;;
-	-p|--path) path="$2"; shift
-	;;
-        -k|--package) package="$2"; shift
-	;;
+    	;;
+    	-n|--name) name="$2"; shift
+    	;;
+    	-p|--path) path="$2"; shift
+    	;;
+        -k|--package) projpackage="$2"; shift
+    	;;
         -a|--activity) activity="$2"; shift
-	;;
+    	;;
 	*) #break;;
    esac
   shift
@@ -159,6 +180,7 @@ then
     echo "PenderTools: Creating Client Project"
     createlibraryproject
     createclientproject
+    updateproject
 else
    cat help 
 fi
