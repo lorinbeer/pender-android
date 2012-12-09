@@ -54,12 +54,7 @@ updatecommand="android update project --path <path> --library <libloc>"
 ##
 createclientproject() {
     latesttarget
-    if [ -z $path ]
-    then
-        pa=$projectname
-    else
-        pa=$path\/$projectname
-    fi
+    genpath "$projectname"
     if [ $target -gt 0 ]
       then
         echo $target
@@ -76,28 +71,19 @@ createclientproject() {
 ##
 createlibraryproject() {
     latesttarget
-    if [ -z $path ]
-    then
-        pa=$libname 
-    else
-        pa=$path\/$libname
-    fi
+    genpath "$libname"
     createcmd=$(echo $createlibcommand | sed -e  s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$libpackage*)
     echo $createcmd
     $createcmd
     copysource
+    copylibs
 }
 
 ##
 # update the client project linking it with the library
 ##
 updateproject() {
-    if [ -z $path]
-    then
-        pa=$projectname
-    else
-        pa=$path\/$libname
-    fi
+    genpath "$projectname"
     updatecmd=$(echo $updatecommand | sed -e s*'<path>'*$pa* -e s*'<libloc>'*$libloc*)
     echo $updatecmd
     $updatecmd
@@ -131,7 +117,34 @@ copysource() {
     cp -r ../src $libname
 }
 
+##
+# copy libs
+##
+copylibs() {
+    cp -r ../libs $libname
+}
 
+##
+# add a reference to the rhino library into the ant properties build file 
+##
+addrhinolibref() {
+    genpath "$projectname"
+    pa=$pa\/ant.properties
+    cat $pa > 
+}
+
+##
+# gen path
+##
+genpath() {
+    pa="" # insure that the temp path variable is defined and cleared
+    if [ -z $path]
+    then
+        pa=$1
+    else
+        pa=path\/$1        
+    fi
+}
 
 ##
 # process command line arguments
