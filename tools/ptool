@@ -22,31 +22,53 @@
 #
 ##
 
-latestandroidtarget= #holds latest android target identified 
+##
+# Default Settings
+##
 
-# hold command line arguments
+# latest android target found on system
+latestandroidtarget=
+# default target
 target=android-8
+# default project name
 projectname=PenderClient
+# library name
 libname=PenderAndroidLibrary
+# clone command
 gitclone="git clone git@github.com:lorinbeer/Pender-android.git"
+# project name
 name=PenderClient
+# path to working directory
 path=""
+# default android activity name for Client project
 activity=PenderActivity
+# default package for Client project
 projpackage=com.pender.client
+# library package
 libpackage=com.pender
+# library location relative to client project by default
 libloc="../PenderAndroidLibrary"
+# url to library dependency (rhino)
+depfileurl="https://sourceforge.net/projects/penderstaticlib/files/rhino1_7R5pre.jar"
 
+##
 # error messages
+##
+
+# returned if android tool not found
 penderandroiderror="Pender Build Tools couldn't find any android targets\nPender depends on the Android SDK android tool accessible on the command line"
+# returned if we fail to find the pender library at the specified location
 penderliblocerror="Pender Library location not specified or not found"
 
-# create lib command silhouette
+##
+# Command Templates
+##
+
+# create lib command template 
 createlibcommand="android create lib-project --name Pender --target <targetid> --path <path> --package <package>"
-
-# create project command silhouette
+# create project command template
 createcommand="android create project --target <targetid> --path <path>  --package <package>  --activity <activityid>"
-
-# update project
+# update project command template
 updatecommand="android update project --path <path> --library <libloc>"
 
 ##
@@ -76,7 +98,7 @@ createlibraryproject() {
     echo $createcmd
     $createcmd
     copysource
-    copylibs
+    getstaticfiles
 }
 
 ##
@@ -118,10 +140,23 @@ copysource() {
 }
 
 ##
-# copy libs
+# get a copy of the static dependencies
+#   attempts to use wget, then curl. If neither is present, the operation fails
 ##
-copylibs() {
-    cp -r ../libs $libname
+getstaticfiles() {
+    fileurl="https://sourceforge.net/projects/penderstaticlib/files/rhino1_7R5pre.jar"
+    if type wget &> /dev/null
+    then
+        echo "executing wget " fileurl
+        wget -O rhino1_75pre.jar $fileurl
+    elif type curl &> /dev/null
+    then
+        genpath $libname
+        echo "executing curl on " $fileurl
+        curl -L -o $pa/libs/rhino1_7Rpre.jar $fileurl
+    else
+        echo "Error: neither wget nor curl found on path, please download static binaries manually from sourceforge (see docs)"
+    fi
 }
 
 ##
@@ -130,11 +165,15 @@ copylibs() {
 addrhinolibref() {
     genpath "$projectname"
     pa=$pa\/ant.properties
-    cat $pa > 
+    cat $pa > ""
 }
 
 ##
 # gen path
+#   generates a path based on the presence of the 'path' argument in the command line call
+#   if 'path' is not set, we interpret the request to take place in the current working directory
+#   if 'path' is set, we use it and an offset provided to this function
+# arg1: offset from base path
 ##
 genpath() {
     pa="" # insure that the temp path variable is defined and cleared
@@ -174,7 +213,6 @@ do
    esac
   shift
 done
-
 
 ##
 # execute create mode
