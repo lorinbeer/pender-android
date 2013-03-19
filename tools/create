@@ -83,6 +83,7 @@ createclientproject() {
         createcmd=$(echo $createcommand | sed -e s*'<targetid>'*$target* -e s*'<path>'*$pa* -e s*'<package>'*$projpackage* -e s*'<activityid>'*$activity*) 
     	echo $createcmd
         $createcmd
+        copyclientassets
       else
         echo $latestandroidtarget
     fi
@@ -140,6 +141,13 @@ copysource() {
 }
 
 ##
+#
+##
+copyclientassets() {
+    genpath "$projectname"
+    cp -r ../assets $pa/assets
+}
+##
 # get a copy of the static dependencies
 #   attempts to use wget, then curl. If neither is present, the operation fails
 ##
@@ -162,11 +170,11 @@ getstaticfiles() {
 ##
 # add a reference to the rhino library into the ant properties build file 
 ##
-addrhinolibref() {
-    genpath "$projectname"
-    pa=$pa\/ant.properties
-    cat $pa > ""
-}
+#addrhinolibref() {
+#    genpath "$projectname"
+#    pa=$pa\/ant.properties
+#    cat $pa > ""
+#}
 
 ##
 # gen path
