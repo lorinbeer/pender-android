@@ -23,11 +23,11 @@
 
 package com.pender;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -40,29 +40,38 @@ import android.widget.RelativeLayout;
  *
  *
  */
+@TargetApi(3)
 public class Pender {
 
     /**
      * 
      *
      */
-    public Pender() {
-        mGLView = new PenderView(mHandler);
+    public Pender(Activity act) {
+    	Log.d("Pender","Initializing Pender Core");
+        mActivity = act;
+        mHub = new PenderHub(act);
+        mGLView = new PenderView(mHub);
+        mHub.setGLView((PenderView)mGLView);
         initView();
 
         ArrayList<String> scripts = new ArrayList<String>();
         scripts.add(readFileAsString("penderandroidshim.js"));
-        scripts.add(readFileAsString("demos/client/penderdemo.js"));
+        scripts.add(readFileAsString("client/penderdemo.js"));
         scripts.add("init();");
 
         ((PenderView)mGLView).execScripts(scripts);
 
     }
 
+    public void init() {
+       // this.initView();
+    }
+
     // 
     public void initView() {
-        final Activity ctx = this;
-        this.runOnUiThread( new Runnable() {
+        final Activity ctx = mActivity;
+        mActivity.runOnUiThread( new Runnable() {
                                 public void run() {
                                       RelativeLayout top = new RelativeLayout( ctx );
                                       top.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
@@ -73,8 +82,46 @@ public class Pender {
         }); // end runnable
     } //initView
 
+
+    /**
+     * 
+     * @param jspath the path to attempt to read
+     * @return
+     */
+    private String readFileAsString( String path) {     
+        BufferedReader reader = null;
+        StringBuffer script = new StringBuffer();
+        try {
+            AssetManager al = mActivity.getAssets(); //sharpshooting hulk
+
+            reader = new BufferedReader( 
+                                new InputStreamReader( 
+                                    al.open(path)));
+            String buf = "";
+            while(( buf = reader.readLine()) != null) {
+                script.append("\n");
+                script.append(buf);
+            }
+        } catch (IOException e ) {
+            Log.d("exception", e.toString() );
+            Log.d("PENDER","STRING PATH: "+path+" DOES NOT COMPUTE. Please ensure that the file exists in a subdirectory of assets eg \"demos/client/penderdemo.js\"");
+        }
+        return script.toString();
+    }
+
+    /**
+     * set the activity Pender references
+     * important to update after onResume and onRestart events
+     */
+    void setActivity(Activity act) {
+        this.mActivity = act;
+    }
+
     // pender's gl surface
     private GLSurfaceView mGLView;
     // handles interthread communication for Pender
     private PenderHub mHub;
+    
+    private Activity mActivity;
+
 }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import com.pender.PenderHub;
+import com.pender.renderer.PenderRenderer;
 
 public class PenderView extends GLSurfaceView {
 

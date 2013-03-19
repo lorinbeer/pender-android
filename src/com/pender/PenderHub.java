@@ -34,14 +34,15 @@ import android.os.Message;
 
 import android.util.Log;
 
+import android.opengl.GLSurfaceView;
 
 
 public class PenderHub extends Handler {
     /**
      *
      */
-    public PenderHub( Activity activity ) {        
-        mActivity = activity;       
+    public PenderHub (Activity activity) {        
+        mActivity = activity;
     }
 
     /**
@@ -53,7 +54,7 @@ public class PenderHub extends Handler {
             String path = (String)msg.obj;
             instream = mActivity.getAssets().open( path );
             final Bitmap temp = BitmapFactory.decodeStream(instream);
-            mActivity.getView().loadTexture( temp, msg.arg2 );      
+            mGLView.loadTexture( temp, msg.arg2 );      
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,11 +84,14 @@ public class PenderHub extends Handler {
             Log.d("PENDER","STRING PATH: "+path+" DOES NOT COMPUTE. Please ensure that the file exists in a subdirectory of assets eg \"demos/client/penderdemo.js\"");
         }
         String str = script.toString();
-        mActivity.getView().execScripts(msg.obj);
+        mGLView.execScripts(msg.obj);
     }
+    public void setGLView(PenderView view) { mGLView = view; }
+    public Activity getActivity() { return mActivity;}
 
     //=============================================================================================== 
 
-    private Activity mMainActivity;
-    
+    private Activity mActivity;
+    private PenderView mGLView;
+ 
 }

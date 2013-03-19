@@ -41,7 +41,7 @@ public class PenderActivity extends Activity {
 
         ArrayList<String> scripts = new ArrayList<String>();
         scripts.add(readFileAsString("penderandroidshim.js"));
-        scripts.add(readFileAsString("demos/client/penderdemo.js"));
+        scripts.add(readFileAsString("client/penderdemo.js"));
         scripts.add("init();");
         
         ((PenderView)mGLView).execScripts(scripts);

@@ -26,6 +26,7 @@ import android.opengl.GLES10;
 import com.pender.glaid.HashableFloatArray;
 import com.pender.glaid.Image;
 import com.pender.glaid.Polygon;
+import com.pender.renderer.PenderRenderer;
 
 
 public class PenderCanvas {
