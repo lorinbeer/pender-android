@@ -14,7 +14,7 @@
  *
  */
 
-package com.pender;
+package com.pender.renderer;
 
 
 import java.util.ArrayList;
@@ -38,6 +38,10 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+import com.pender.FuncDelayPair;
+import com.pender.PenderCanvas;
+import com.pender.PenderHub;
+import com.pender.PenderJS;
 import com.pender.glaid.Image;
 import com.pender.glaid.Polygon;
 
