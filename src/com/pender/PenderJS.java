@@ -173,6 +173,16 @@ public class PenderJS {
 	public ArrayList<FuncDelayPair> getDelayed() {
 		return mDelayed;
 	}
+	
+	//==========================================================================
+	//==========================================================================
+	/*
+	 * replace with circular array
+	 */
+	public void setDimensions(int w, int h) {
+		width = w;
+		height = h;
+	}
 
 	//==========================================================================
 	// Private Members

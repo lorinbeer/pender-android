@@ -73,10 +73,16 @@ public class Pender {
         final Activity ctx = mActivity;
         mActivity.runOnUiThread( new Runnable() {
                                 public void run() {
+                                	
                                       RelativeLayout top = new RelativeLayout( ctx );
-                                      top.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
-                                                                                          RelativeLayout.LayoutParams.FILL_PARENT));
+                                      ctx.setContentView( top );
+                                   //   top.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
+                                     //                                                     RelativeLayout.LayoutParams.FILL_PARENT));
+                                      mGLView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
+                                                                                                   RelativeLayout.LayoutParams.FILL_PARENT));
                                       top.addView( mGLView );
+                                      top.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
+                                                                                           RelativeLayout.LayoutParams.FILL_PARENT));
                                       ctx.setContentView( top );
                                   } //end run
         }); // end runnable
@@ -116,6 +122,8 @@ public class Pender {
     void setActivity(Activity act) {
         this.mActivity = act;
     }
+    
+    public GLSurfaceView getGLView() {return mGLView;}
 
     // pender's gl surface
     private GLSurfaceView mGLView;

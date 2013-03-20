@@ -28,7 +28,7 @@ import android.os.Message;
 
 
 public class PenderMessageHandler extends Handler {
-	
+/*	
 	public PenderMessageHandler( PenderActivity activity ) {
 		
 		mActivity = activity;
@@ -49,5 +49,5 @@ public class PenderMessageHandler extends Handler {
 	public PenderActivity getActivity() { return mActivity; }
 
 	private PenderActivity mActivity;
-	
+	*/
 }

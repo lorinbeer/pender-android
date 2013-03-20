@@ -29,7 +29,9 @@ import android.util.Log;
 import android.widget.RelativeLayout;
 
 public class PenderActivity extends Activity {
+	
     /** Called when the activity is first created. */
+	/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +50,12 @@ public class PenderActivity extends Activity {
     }
 
     public PenderView getView() { return (PenderView)this.mGLView; }
-
+*/
     /**
      * 
      * @param jspath the path to attempt to read
      * @return
-     */
+     
     private String readFileAsString( String path) {		
     	BufferedReader reader = null;
     	StringBuffer script = new StringBuffer();
@@ -90,4 +92,5 @@ public class PenderActivity extends Activity {
 
     private GLSurfaceView mGLView;
     private PenderHub mHandler;
+    */
 }

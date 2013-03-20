@@ -109,10 +109,11 @@ public class PenderRenderer implements GLSurfaceView.Renderer {
     				   GLES10.GL_NICEST);
     */} 
     //==========================================================================
-    public void onSurfaceChanged( GL10 gl, int width, int height ) {
+	public void onSurfaceChanged( GL10 gl, int width, int height ) {
     	if (mViewport == null) {
     		mViewport= new int[] {0,0,width,height};
     	}
+    	mPenderJS.setDimensions(width, height);
     	// Sets the current view port to the new size.
     	GLES10.glViewport(mViewport[0], mViewport[1], mViewport[2], mViewport[3]);
     	//GLES10.glViewport(0, 0, width, height);
